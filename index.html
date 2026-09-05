@@ -366,10 +366,10 @@
     <div class="rules-content" id="rules-content">
       <ul>
         <li><b>Daily Scoring:</b> Daily Chips = Base Chips × Active Multiplier.</li>
-        <li><b>Workouts:</b> Gym / Home workouts grant <b>100 Base Chips</b>. Workout Skip grants 25 Chips. Violations give 0 Chips.</li>
+        <li><b>Workouts:</b> Gym / Home workouts grant <b>100 Base Chips</b>. Workout Skip grants 25 Chips. Violations give 0 Chips. You have <b>5 Workout Skips total</b> for the entire campaign (non-renewable).</li>
         <li><b>Sugar Control:</b> Sugar Free days add <b>+1 Multiplier</b>. Sugar Skip maintains your Mult. Sugar Violations <b>reset Multiplier to 0</b>.</li>
-        <li><b>Perks:</b> Select 1 active Perk per round to gain bonuses. Unselected Perks rotate automatically after each round!</li>
-        <li><b>Ante Goals:</b> Each Ante lasts 7 Rounds. Reach the Chip Target before the 7 rounds end to clear the Ante!</li>
+        <li><b>Ante Goals & Rewards:</b> Each Ante lasts 7 Rounds. Clear an Ante target to reach the next Ante and gain <b>+1 Sugar Skip</b>!</li>
+        <li><b>Perks:</b> Select 1 active Perk per round for bonuses. Unselected Perks rotate automatically after each round.</li>
       </ul>
     </div>
 
@@ -785,14 +785,14 @@
     if (state.roundInAnte > 7) {
       let target = anteTargets[state.ante - 1] || (4900 * state.ante - 2100);
       if (state.anteChips >= target) {
-        alert(`🎉 ANTE ${state.ante} CLEARED!`);
+        state.sugarSkips++;
+        alert(`🎉 ANTE ${state.ante} CLEARED!\nReward: +1 Sugar Skip gained!`);
       } else {
         alert(`❌ ANTE ${state.ante} FAILED!`);
       }
       state.ante++;
       state.roundInAnte = 1;
       state.anteChips = 0;
-      state.sugarSkips = 1;
     }
 
     await saveStateToFirebase();
