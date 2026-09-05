@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>No Sugar 'Til Xmas - Carlos</title>
+  <title>No Sugar 'Til Xmas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #090d16;
-      --card: #111827;
-      --card-border: #1f293d;
+      --bg: #030712;
+      --card: #0b1329;
+      --card-border: #1d3557;
       --green: #10b981;
       --blue: #3b82f6;
       --red: #ef4444;
       --white: #ffffff;
-      --muted: #6b7280;
-      --yellow: #ffd700;
+      --muted: #93c5fd;
+      --yellow: #facc15;
+      --purple: #8b5cf6;
     }
 
     * { box-sizing: border-box; }
@@ -28,13 +29,16 @@
       color: var(--white); 
       margin: 0; 
       padding: 12px;
-      background-image: radial-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 0);
-      background-size: 20px 20px;
+      background-image: 
+        radial-gradient(rgba(59, 130, 246, 0.07) 1px, transparent 0),
+        radial-gradient(rgba(139, 92, 246, 0.04) 1px, transparent 0);
+      background-size: 32px 32px;
+      background-position: 0 0, 16px 16px;
       -webkit-tap-highlight-color: transparent;
     }
 
     .container { 
-      max-width: 100%; 
+      max-width: 480px; 
       margin: 0 auto; 
       display: flex; 
       flex-direction: column; 
@@ -44,47 +48,65 @@
     .card { 
       background: var(--card); 
       border: 1.5px solid var(--card-border); 
-      border-radius: 8px; 
-      padding: 12px; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+      border-radius: 12px; 
+      padding: 14px; 
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06); 
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0.5;
     }
 
     .main-title {
       font-family: 'Press Start 2P', monospace;
       text-align: center;
       font-size: 0.75rem;
-      color: var(--blue);
-      margin-bottom: 6px;
+      color: var(--green);
+      margin-bottom: 8px;
       text-transform: uppercase;
-      line-height: 1.2;
+      line-height: 1.4;
+      text-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
     }
 
     .header { 
       font-family: 'Press Start 2P', monospace;
       text-align: center; 
-      font-size: 0.9rem; 
-      color: var(--green); 
+      font-size: 0.85rem; 
+      color: var(--yellow); 
+      text-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
     }
 
     /* Rules Collapsible Section */
     .rules-toggle {
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       color: var(--blue);
       text-align: center;
-      padding: 6px;
+      padding: 8px;
       background: rgba(59, 130, 246, 0.1);
       border: 1px dashed var(--blue);
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      margin-bottom: 4px;
+      margin-bottom: 8px;
       user-select: none;
+      transition: all 0.2s;
+    }
+
+    .rules-toggle:hover {
+      background: rgba(59, 130, 246, 0.2);
     }
 
     .rules-content {
       display: none;
       font-size: 0.8rem;
-      color: #d1d5db;
+      color: #e2e8f0;
       line-height: 1.4;
       margin-top: 8px;
       padding-top: 8px;
@@ -105,30 +127,31 @@
     .stat-box { 
       background: rgba(0, 0, 0, 0.4); 
       border: 1px solid var(--card-border);
-      padding: 8px 4px; 
-      border-radius: 6px; 
+      padding: 10px 8px; 
+      border-radius: 8px; 
       text-align: center; 
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
     }
     
     .stat-val { 
       font-family: 'Press Start 2P', monospace;
-      font-size: 1rem; 
+      font-size: 0.9rem; 
       color: var(--white);
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
 
-    .stat-lbl { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+    .stat-lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
 
     /* Weekly Grid (Mon -> Sun) */
     .week-days-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 4px;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     .day-cell {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--card-border);
       border-radius: 6px;
       padding: 6px 2px;
@@ -137,16 +160,18 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      min-height: 70px;
+      min-height: 68px;
+      transition: transform 0.2s;
     }
 
     .day-cell.today {
       border-color: var(--yellow);
-      background: rgba(255, 215, 0, 0.1);
+      background: rgba(250, 204, 21, 0.1);
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
     }
 
     .day-cell-name {
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       color: var(--muted);
       text-transform: uppercase;
       font-weight: 700;
@@ -157,11 +182,11 @@
     }
 
     .day-cell-status {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
     }
 
     .day-cell-meta {
-      font-size: 0.5rem;
+      font-size: 0.45rem;
       color: var(--yellow);
       font-weight: bold;
     }
@@ -173,14 +198,15 @@
       border-radius: 8px;
       padding: 10px;
       margin-top: 10px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
     }
 
     .chart-title {
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       color: var(--blue);
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       text-align: center;
     }
 
@@ -189,8 +215,8 @@
       grid-template-columns: repeat(7, 1fr);
       gap: 4px;
       align-items: flex-end;
-      height: 80px;
-      padding-top: 8px;
+      height: 70px;
+      padding-top: 6px;
       border-bottom: 1px solid var(--card-border);
       padding-bottom: 4px;
     }
@@ -204,44 +230,48 @@
     }
 
     .bar-fill {
-      width: 12px;
+      width: 10px;
       background: linear-gradient(180deg, var(--blue), var(--green));
       border-radius: 3px 3px 0 0;
       transition: height 0.4s ease;
       min-height: 2px;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
     }
 
     .bar-label {
-      font-size: 0.5rem;
+      font-size: 0.45rem;
       color: var(--muted);
       margin-top: 3px;
       text-transform: uppercase;
     }
 
     .progress-bg { 
-      background: rgba(0, 0, 0, 0.5); 
+      background: rgba(0, 0, 0, 0.6); 
       border: 1px solid var(--card-border);
-      border-radius: 4px; 
+      border-radius: 6px; 
       height: 12px; 
       overflow: hidden; 
-      margin-top: 4px; 
-      padding: 1px;
+      margin-top: 6px; 
+      padding: 2px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
     }
     
     .progress-fill { 
-      background: var(--green); 
+      background: linear-gradient(90deg, #059669, var(--green)); 
       height: 100%; 
       width: 0%; 
-      border-radius: 2px;
+      border-radius: 3px;
       transition: width 0.4s ease; 
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
     }
     
     .progress-fill-global { 
-      background: var(--blue); 
+      background: linear-gradient(90deg, #1d4ed8, var(--blue)); 
       height: 100%; 
       width: 0%; 
-      border-radius: 2px;
+      border-radius: 3px;
       transition: width 0.4s ease; 
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
     }
 
     .btn-grid {
@@ -260,7 +290,7 @@
       color: var(--white); 
       border: 1px solid var(--card-border); 
       padding: 8px 6px; 
-      border-radius: 6px; 
+      border-radius: 8px; 
       font-weight: 700; 
       cursor: pointer; 
       width: 100%; 
@@ -270,49 +300,62 @@
       justify-content: center;
       text-align: center;
       line-height: 1.2;
-      min-height: 54px;
+      min-height: 52px;
       transition: all 0.2s;
-      opacity: 0.4;
+      opacity: 0.45;
     }
 
     .btn.active {
       opacity: 1 !important;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+      background: rgba(59, 130, 246, 0.12);
     }
     
     .btn:hover:not(:disabled), .btn:active:not(:disabled) { 
       opacity: 0.9;
     }
-    .btn:disabled { opacity: 0.25; cursor: not-allowed; }
+    .btn:disabled { opacity: 0.2; cursor: not-allowed; }
     
-    .btn-green { border-color: var(--green); color: var(--green); }
-    .btn-blue { border-color: var(--blue); color: var(--blue); }
+    .btn-green.active { border-color: var(--green); color: var(--green); background: rgba(16, 185, 129, 0.15); box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+    .btn-blue.active { border-color: var(--blue); color: var(--blue); background: rgba(59, 130, 246, 0.15); box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
     
     .btn-red { 
       border: 1.5px solid var(--red) !important; 
       color: var(--red) !important; 
-      background: rgba(239, 68, 68, 0.08) !important;
+      background: rgba(239, 68, 68, 0.06) !important;
     }
     
+    .btn-red.active {
+      background: rgba(239, 68, 68, 0.2) !important;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+      opacity: 1 !important;
+    }
+
     .btn-next { 
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.7rem;
-      background: var(--green); 
+      font-size: 0.65rem;
+      background: linear-gradient(135deg, #059669, var(--green)); 
       color: #000; 
       border: none;
       margin-top: 12px; 
-      padding: 14px; 
+      padding: 12px; 
       font-weight: bold;
-      min-height: 48px;
+      min-height: 46px;
       width: 100%;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       opacity: 1;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      transition: transform 0.1s, box-shadow 0.2s;
+    }
+
+    .btn-next:hover {
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
     }
     
     .section-title { 
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.6rem; 
+      font-size: 0.55rem; 
       color: var(--green); 
       margin-bottom: 6px; 
       text-transform: uppercase; 
@@ -320,42 +363,45 @@
     
     .status-badge { 
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.6rem; 
-      padding: 3px 6px; 
-      border-radius: 3px; 
-      background: rgba(59, 130, 246, 0.1); 
+      font-size: 0.55rem; 
+      padding: 4px 8px; 
+      border-radius: 4px; 
+      background: rgba(59, 130, 246, 0.15); 
       border: 1px solid var(--blue);
       color: var(--blue);
       display: inline-block; 
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
     }
     
-    .joker-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 6px; }
+    .joker-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 6px; }
     
     .joker-card { 
       border: 1px solid var(--card-border); 
       background: rgba(0,0,0,0.3); 
-      padding: 8px 6px; 
-      border-radius: 6px; 
+      padding: 8px; 
+      border-radius: 8px; 
       font-size: 0.75rem; 
       cursor: pointer; 
       text-align: center; 
       transition: all 0.2s;
       color: var(--white);
-      line-height: 1.2;
+      line-height: 1.3;
     }
     
     .joker-card.selected { 
       border-color: var(--blue); 
-      background: rgba(59, 130, 246, 0.15); 
+      background: rgba(59, 130, 246, 0.2); 
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
     }
     
     .timer-box { 
       font-family: 'Press Start 2P', monospace;
       text-align: center; 
-      font-size: 0.55rem; 
+      font-size: 0.5rem; 
       color: var(--blue); 
       margin-top: 10px; 
       line-height: 1.4;
+      text-shadow: 0 0 6px rgba(59, 130, 246, 0.3);
     }
 
     .reset-link {
@@ -366,11 +412,13 @@
       cursor: pointer;
       text-decoration: underline;
       padding: 4px;
+      opacity: 0.7;
     }
+    .reset-link:hover { opacity: 1; }
 
     .sync-status {
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       text-align: center;
       color: var(--muted);
       margin-bottom: 8px;
@@ -382,9 +430,10 @@
       justify-content: space-between;
       background: rgba(0,0,0,0.4);
       border: 1px solid var(--card-border);
-      border-radius: 6px;
-      padding: 6px 10px;
-      margin-bottom: 10px;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
     }
 
     .date-picker-box input {
@@ -392,7 +441,7 @@
       border: none;
       color: var(--white);
       font-family: 'Rajdhani', sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: bold;
       color-scheme: dark;
     }
@@ -401,80 +450,74 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 10px;
+      margin-top: 8px;
       background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(16, 185, 129, 0.08));
-      border: 2px solid var(--blue);
+      border: 1.5px solid var(--blue);
       border-radius: 8px;
-      padding: 10px 12px;
-      box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+      padding: 8px 12px;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
     }
 
     .volume-box input {
-      background: rgba(0,0,0,0.7);
-      border: 1.5px solid var(--blue);
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--blue);
       border-radius: 6px;
       color: var(--white);
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.85rem;
-      padding: 8px;
-      width: 100px;
+      font-size: 0.8rem;
+      padding: 6px;
+      width: 90px;
       text-align: center;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
     }
 
     /* VIBRANT & COLORFUL LOGGED ZONE REDESIGN */
     .daily-summary-panel {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(59, 130, 246, 0.15));
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(59, 130, 246, 0.14));
       border: 2px solid var(--green);
       border-radius: 10px;
-      padding: 14px;
-      margin-top: 10px;
+      padding: 12px;
+      margin-top: 8px;
       text-align: center;
       display: none;
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
     }
 
     .daily-summary-title {
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       color: var(--green);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       text-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
     }
 
     .logged-status-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.2);
       border: 1.5px solid var(--green);
       color: var(--white);
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.55rem;
-      padding: 6px 10px;
+      font-size: 0.5rem;
+      padding: 5px 8px;
       border-radius: 6px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       width: 100%;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-      box-shadow: inset 0 0 8px rgba(16, 185, 129, 0.2);
+      box-shadow: inset 0 0 6px rgba(16, 185, 129, 0.2);
     }
 
     .logged-pills-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-bottom: 10px;
+      gap: 6px;
+      margin-bottom: 6px;
     }
 
     .logged-pill {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 8px;
+      border-radius: 6px;
+      padding: 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -483,7 +526,7 @@
     }
 
     .logged-pill-label {
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       color: var(--muted);
       text-transform: uppercase;
       font-weight: 700;
@@ -491,7 +534,7 @@
 
     .logged-pill-value {
       font-family: 'Rajdhani', sans-serif;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: var(--white);
     }
@@ -499,28 +542,29 @@
     .logged-chips-banner {
       background: rgba(59, 130, 246, 0.2);
       border: 1.5px solid var(--blue);
-      border-radius: 8px;
-      padding: 8px;
+      border-radius: 6px;
+      padding: 6px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       color: var(--white);
       font-family: 'Rajdhani', sans-serif;
       font-weight: 700;
+      font-size: 0.85rem;
     }
 
     .logged-chips-banner span:last-child {
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--yellow);
-      text-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+      text-shadow: 0 0 6px rgba(250, 204, 21, 0.4);
     }
 
     .lock-notice {
       color: var(--red);
       font-size: 0.75rem;
       text-align: center;
-      margin-top: 6px;
+      margin-top: 8px;
       font-weight: bold;
       display: none;
     }
@@ -532,7 +576,7 @@
 
   <!-- PROGRESS DASHBOARD -->
   <div class="card">
-    <div class="main-title">🎄 No Sugar 'Til Xmas - Carlos 🎄</div>
+    <div class="main-title">🎄 No Sugar 'Til Xmas 🎄</div>
     <div class="sync-status" id="sync-status">⚡ CONNECTING TO FIREBASE...</div>
     
     <!-- Collapsible Challenge Rules -->
@@ -547,14 +591,14 @@
       </ul>
     </div>
 
-    <div class="header" id="ante-title" style="margin-top: 8px;">ANTE 1 / 16</div>
+    <div class="header" id="ante-title" style="margin-top: 6px;">ANTE 1 / 16</div>
     <div style="text-align: center; margin-top: 4px;">
       <span class="status-badge" id="round-tracker">ROUND 1 OF 7</span>
     </div>
 
     <!-- WEEKLY VIEW (MON → SUN) -->
-    <div style="margin-top: 10px;">
-      <div style="font-size: 0.65rem; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; color: var(--blue);">🗓️ WEEKLY VIEW (DAILY CHIPS):</div>
+    <div style="margin-top: 8px;">
+      <div style="font-size: 0.6rem; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; color: var(--blue);">🗓️ WEEKLY VIEW (DAILY CHIPS):</div>
       <div class="week-days-grid" id="week-days-grid"></div>
     </div>
 
@@ -565,32 +609,6 @@
         <!-- Filled via JS -->
       </div>
     </div>
-    
-    <!-- Daily Summary Panel (Vibrant & Colorful Redesign) -->
-    <div class="daily-summary-panel" id="daily-summary-panel">
-      <div class="daily-summary-title">
-        <span>✨</span> <span id="summary-date-title">DAILY SUMMARY</span> <span>✨</span>
-      </div>
-      <div class="logged-status-badge">✅ THIS DAY IS ALREADY LOGGED!</div>
-      <div class="logged-pills-grid">
-        <div class="logged-pill">
-          <span class="logged-pill-label">Workout</span>
-          <span class="logged-pill-value" id="summary-workout">---</span>
-        </div>
-        <div class="logged-pill">
-          <span class="logged-pill-label">Load Lifted</span>
-          <span class="logged-pill-value" id="summary-load" style="color: var(--yellow);">---</span>
-        </div>
-      </div>
-      <div class="logged-pill" style="margin-bottom: 8px; width: 100%;">
-        <span class="logged-pill-label">Sugar Status</span>
-        <span class="logged-pill-value" id="summary-sugar" style="color: var(--green);">---</span>
-      </div>
-      <div class="logged-chips-banner">
-        <span>CHIPS EARNED:</span>
-        <span id="summary-chips">---</span>
-      </div>
-    </div>
 
     <div class="stat-grid">
       <div class="stat-box">
@@ -598,14 +616,14 @@
         <div class="stat-lbl">Active Mult</div>
       </div>
       <div class="stat-box">
-        <div class="stat-val" id="skips-display" style="font-size: 0.85rem; margin-top: 2px;">🏋️5 | 🍬1</div>
+        <div class="stat-val" id="skips-display" style="font-size: 0.8rem; margin-top: 2px;">🏋️5 | 🍬1</div>
         <div class="stat-lbl">Skips Left</div>
       </div>
     </div>
 
     <!-- Ante Progress -->
-    <div style="margin-top: 10px;">
-      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700;">
+    <div style="margin-top: 8px;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 700;">
         <span>ANTE CHIPS</span>
         <span id="ante-progress-text" style="color: var(--green);">0 / 2,800</span>
       </div>
@@ -615,8 +633,8 @@
     </div>
 
     <!-- Global Progress -->
-    <div style="margin-top: 8px;">
-      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700;">
+    <div style="margin-top: 6px;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 700;">
         <span>TOTAL CAMPAIGN</span>
         <span id="global-progress-text" style="color: var(--blue);">0%</span>
       </div>
@@ -638,43 +656,69 @@
   <div class="card">
     <div class="section-title">Log Date</div>
     <div class="date-picker-box">
-      <span style="font-size: 0.8rem; font-weight: 700;">📅 DATE:</span>
+      <span style="font-size: 0.75rem; font-weight: 700;">📅 DATE:</span>
       <input type="date" id="log-date-picker" min="2026-09-01">
     </div>
-    
-    <div class="lock-notice" id="lock-notice">⚠️ YOU MUST LOG THE PREVIOUS DAY FIRST!</div>
 
     <div id="log-controls-container">
       <div class="section-title">1. Workout Log</div>
       <div class="btn-grid">
-        <button class="btn btn-green active" id="btn-w-gym"><span>🏋️ Gym + Pushups</span><span style="font-size: 0.7rem; color: var(--muted);">(100 Chips)</span></button>
-        <button class="btn btn-green" id="btn-w-home"><span>🏠 Home + Pushups</span><span style="font-size: 0.7rem; color: var(--muted);">(100 Chips)</span></button>
-        <button class="btn btn-blue" id="btn-w-skip"><span>🛡️ Workout Skip</span><span id="skip-chip-val" style="font-size: 0.7rem; color: var(--muted);">(25 Chips)</span></button>
-        <button class="btn btn-red" id="btn-w-viol"><span>⚠️ Violation</span><span style="font-size: 0.7rem; color: #fca5a5;">(0 Chips)</span></button>
+        <button class="btn btn-green active" id="btn-w-gym"><span>🏋️ Gym + Pushups</span><span style="font-size: 0.65rem; color: var(--muted);">(100 Chips)</span></button>
+        <button class="btn btn-green" id="btn-w-home"><span>🏠 Home + Pushups</span><span style="font-size: 0.65rem; color: var(--muted);">(100 Chips)</span></button>
+        <button class="btn btn-blue" id="btn-w-skip"><span>🛡️ Workout Skip</span><span id="skip-chip-val" style="font-size: 0.65rem; color: var(--muted);">(25 Chips)</span></button>
+        <button class="btn btn-red" id="btn-w-viol"><span>⚠️ Violation</span><span style="font-size: 0.65rem; color: #fca5a5;">(0 Chips)</span></button>
       </div>
 
       <!-- Volume Input -->
       <div class="volume-box">
         <div>
-          <span style="font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: var(--blue); display: block; margin-bottom: 2px;">🏋️ VOLUME LIFTED</span>
-          <span style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">Total weight lifted today</span>
+          <span style="font-family: 'Press Start 2P', monospace; font-size: 0.55rem; color: var(--blue); display: block; margin-bottom: 2px;">🏋️ VOLUME LIFTED</span>
+          <span style="font-size: 0.7rem; color: var(--muted); font-weight: 700;">Total weight lifted today</span>
         </div>
         <div>
           <input type="number" id="workout-volume" placeholder="0" min="0" step="0.5">
-          <span style="font-size: 0.7rem; color: var(--white); font-weight: bold; margin-left: 2px;">KG</span>
+          <span style="font-size: 0.65rem; color: var(--white); font-weight: bold; margin-left: 2px;">KG</span>
         </div>
       </div>
 
-      <div style="margin-top: 10px; border-top: 1px dashed var(--card-border); padding-top: 8px;">
+      <div style="margin-top: 8px; border-top: 1px dashed var(--card-border); padding-top: 6px;">
         <div class="section-title">2. Sugar Log</div>
         <div class="btn-grid">
-          <button class="btn btn-green active" id="btn-s-clean"><span>✅ Sugar Free</span><span style="font-size: 0.7rem; color: var(--muted);">(+1 Mult)</span></button>
-          <button class="btn btn-blue" id="btn-s-skip"><span>🍬 Sugar Skip</span><span style="font-size: 0.7rem; color: var(--muted);">(Keep Mult)</span></button>
-          <button class="btn btn-red" id="btn-s-viol" style="grid-column: span 2;"><span>⚠️ Sugar Violation</span><span style="font-size: 0.7rem; color: #fca5a5;">(Reset Mult to 0)</span></button>
+          <button class="btn btn-green active" id="btn-s-clean"><span>✅ Sugar Free</span><span style="font-size: 0.65rem; color: var(--muted);">(+1 Mult)</span></button>
+          <button class="btn btn-blue" id="btn-s-skip"><span>🍬 Sugar Skip</span><span style="font-size: 0.65rem; color: var(--muted);">(Keep Mult)</span></button>
+          <button class="btn btn-red" id="btn-s-viol" style="grid-column: span 2;"><span>⚠️ Sugar Violation</span><span style="font-size: 0.65rem; color: #fca5a5;">(Reset Mult to 0)</span></button>
         </div>
       </div>
 
       <button class="btn btn-next" id="btn-calculate">END ROUND</button>
+    </div>
+
+    <!-- Daily Summary Panel MOVED HERE (right next to/below logged status) -->
+    <div class="lock-notice" id="lock-notice">⚠️ YOU MUST LOG THE PREVIOUS DAY FIRST!</div>
+    
+    <div class="daily-summary-panel" id="daily-summary-panel">
+      <div class="daily-summary-title">
+        <span>✨</span> <span id="summary-date-title">DAILY SUMMARY</span> <span>✨</span>
+      </div>
+      <div class="logged-status-badge">✅ THIS DAY IS ALREADY LOGGED!</div>
+      <div class="logged-pills-grid">
+        <div class="logged-pill">
+          <span class="logged-pill-label">Workout</span>
+          <span class="logged-pill-value" id="summary-workout">---</span>
+        </div>
+        <div class="logged-pill">
+          <span class="logged-pill-label">Load Lifted</span>
+          <span class="logged-pill-value" id="summary-load" style="color: var(--yellow);">---</span>
+        </div>
+      </div>
+      <div class="logged-pill" style="margin-bottom: 6px; width: 100%;">
+        <span class="logged-pill-label">Sugar Status</span>
+        <span class="logged-pill-value" id="summary-sugar" style="color: var(--green);">---</span>
+      </div>
+      <div class="logged-chips-banner">
+        <span>CHIPS EARNED:</span>
+        <span id="summary-chips">---</span>
+      </div>
     </div>
 
     <div class="timer-box" id="midnight-timer"></div>
@@ -830,7 +874,7 @@
       let barCol = document.createElement('div');
       barCol.className = 'bar-col';
       barCol.innerHTML = `
-        <div style="font-size: 0.4rem; color: var(--yellow); margin-bottom: 2px;">${cargaDia > 0 ? cargaDia : ''}</div>
+        <div style="font-size: 0.35rem; color: var(--yellow); margin-bottom: 2px;">${cargaDia > 0 ? cargaDia : ''}</div>
         <div class="bar-fill" style="height: ${barHeightPct}%;"></div>
         <div class="bar-label">${dayName}</div>
       `;
