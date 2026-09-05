@@ -296,27 +296,30 @@
       color-scheme: dark;
     }
 
+    /* DESTAQUE MELHORADO PARA O VOLUME LIFTED */
     .volume-box {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 8px;
-      background: rgba(0,0,0,0.2);
-      border: 1px solid var(--card-border);
-      border-radius: 6px;
-      padding: 6px 10px;
+      margin-top: 10px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(16, 185, 129, 0.08));
+      border: 2px solid var(--blue);
+      border-radius: 8px;
+      padding: 10px 12px;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
     }
 
     .volume-box input {
-      background: rgba(0,0,0,0.5);
-      border: 1px solid var(--card-border);
-      border-radius: 4px;
+      background: rgba(0,0,0,0.7);
+      border: 1.5px solid var(--blue);
+      border-radius: 6px;
       color: var(--white);
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.75rem;
-      padding: 6px;
-      width: 90px;
+      font-size: 0.85rem;
+      padding: 8px;
+      width: 100px;
       text-align: center;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .daily-summary-panel {
@@ -445,12 +448,15 @@
         <button class="btn btn-red" id="btn-w-viol"><span>⚠️ Violation</span><span style="font-size: 0.7rem; color: #fca5a5;">(0 Chips)</span></button>
       </div>
 
-      <!-- Volume Input -->
+      <!-- Volume Input com Destaque -->
       <div class="volume-box">
-        <span style="font-size: 0.75rem; font-weight: 700;">🏋️ VOLUME LIFTED:</span>
+        <div>
+          <span style="font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: var(--blue); display: block; margin-bottom: 2px;">🏋️ VOLUME LIFTED</span>
+          <span style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">Total weight lifted today</span>
+        </div>
         <div>
           <input type="number" id="workout-volume" placeholder="0" min="0" step="0.5">
-          <span style="font-size: 0.7rem; color: var(--muted);">KG</span>
+          <span style="font-size: 0.7rem; color: var(--white); font-weight: bold; margin-left: 2px;">KG</span>
         </div>
       </div>
 
@@ -755,7 +761,7 @@
     let baseChips = 0;
 
     let logDateObj = new Date(selectedDateStr + "T00:00:00");
-    let dayOfWeek = logDateObj.getDay(); // 0 = Sun, 6 = Sat
+    let dayOfWeek = logDateObj.getDay();
 
     // 1. WORKOUT LOGIC
     if (state.pendingWorkout === 'gym' || state.pendingWorkout === 'home') {
@@ -777,7 +783,7 @@
     if (state.pendingSugar === 'clean') {
       let addMult = 1;
       if (activeJoker.id === 'sugar_rush') addMult = 2;
-      if (activeJoker.id === 'sweet_saver') addMult += 1; // <--- Adicionado para o Sweet Saver dar +1 extra no mult
+      if (activeJoker.id === 'sweet_saver') addMult += 1;
       if (activeJoker.id === 'sugar_cleanse' && state.multiplier === 0) addMult = 3;
       if (activeJoker.id === 'mult_doubler' && state.multiplier > 5) addMult = 2;
       if (activeJoker.id === 'iron_grip' && volumeLifted >= 3000) addMult += 1;
