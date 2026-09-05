@@ -119,7 +119,7 @@
 
     .stat-lbl { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
 
-    /* Grelha Semanal Detalhada (Seg -> Dom) */
+    /* Weekly Grid (Mon -> Sun) */
     .week-days-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -166,7 +166,7 @@
       font-weight: bold;
     }
 
-    /* Gráfico de Barras de Carga */
+    /* Load Bar Chart */
     .chart-container {
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--card-border);
@@ -471,7 +471,7 @@
         <li><b>Daily Scoring:</b> Daily Chips = Base Chips × Active Multiplier.</li>
         <li><b>Workouts:</b> Gym / Home workouts grant <b>100 Base Chips</b>. Workout Skip grants 25 Chips. Violations give 0 Chips. You have <b>5 Workout Skips total</b> for the entire campaign (non-renewable).</li>
         <li><b>Sugar Control:</b> Sugar Free days add <b>+1 Multiplier</b>. Sugar Skip maintains your Mult. Sugar Violations <b>reset Multiplier to 0</b>.</li>
-        <li><b>Visão Semanal:</b> Acompanha o teu progresso de Segunda a Domingo com as chips e carga levantada!</li>
+        <li><b>Weekly View:</b> Track your progress from Monday to Sunday with chips and lifted load!</li>
         <li><b>Jokers:</b> Select 1 active Joker per round for bonuses. Unselected Jokers rotate automatically after each round.</li>
       </ul>
     </div>
@@ -481,17 +481,17 @@
       <span class="status-badge" id="round-tracker">ROUND 1 OF 7</span>
     </div>
 
-    <!-- VISÃO DA SEMANA (SEG → DOM) -->
+    <!-- WEEKLY VIEW (MON → SUN) -->
     <div style="margin-top: 10px;">
-      <div style="font-size: 0.65rem; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; color: var(--blue);">🗓️ VISÃO DA SEMANA (CHIPS DIÁRIAS):</div>
+      <div style="font-size: 0.65rem; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; color: var(--blue);">🗓️ WEEKLY VIEW (DAILY CHIPS):</div>
       <div class="week-days-grid" id="week-days-grid"></div>
     </div>
 
-    <!-- GRÁFICO DE CARGA SEMANAL -->
+    <!-- WEEKLY LOAD CHART -->
     <div class="chart-container">
-      <div class="chart-title">📊 Gráfico de Carga Levantada (kg)</div>
+      <div class="chart-title">📊 Lifted Load Chart (kg)</div>
       <div class="bars-wrapper" id="bars-wrapper">
-        <!-- Preenchido via JS -->
+        <!-- Filled via JS -->
       </div>
     </div>
     
@@ -562,7 +562,7 @@
         <button class="btn btn-red" id="btn-w-viol"><span>⚠️ Violation</span><span style="font-size: 0.7rem; color: #fca5a5;">(0 Chips)</span></button>
       </div>
 
-      <!-- Volume Input com Destaque -->
+      <!-- Volume Input -->
       <div class="volume-box">
         <div>
           <span style="font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: var(--blue); display: block; margin-bottom: 2px;">🏋️ VOLUME LIFTED</span>
@@ -696,7 +696,7 @@
 
     let { weekData } = getWeekLogs(selectedDateStr);
     let todayStr = getPTDateString();
-    const shortDays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+    const shortDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
     let maxCarga = 100;
     weekData.forEach(item => {
@@ -870,11 +870,11 @@
       let workoutText = { 'gym': '🏋️ Gym', 'home': '🏠 Home', 'skip': '🛡️ Workout Skip', 'viol': '⚠️ Violation' }[log.workout] || log.workout;
       let sugarText = { 'clean': '✅ Sugar Free', 'skip': '🍬 Sugar Skip', 'reset': '⚠️ Violation', 'viol': '⚠️ Violation' }[log.sugar] || log.sugar;
 
-      document.getElementById('summary-date-title').innerText = `RESUMO DO DIA (${selectedDate})`;
+      document.getElementById('summary-date-title').innerText = `DAILY SUMMARY (${selectedDate})`;
       document.getElementById('summary-details').innerHTML = `
-        <b>Workout:</b> ${workoutText} | <b>Carga:</b> ${log.volume || 0} kg<br>
+        <b>Workout:</b> ${workoutText} | <b>Load:</b> ${log.volume || 0} kg<br>
         <b>Sugar:</b> ${sugarText}<br>
-        <b>Chips Ganhas:</b> +${log.score || 0} Chips
+        <b>Chips Earned:</b> +${log.score || 0} Chips
       `;
     } else if (selectedDate > nextSequential) {
       summaryPanel.style.display = 'none';
@@ -1065,7 +1065,7 @@
     let isAlreadyLogged = !!(state.dailyLogs && state.dailyLogs[selectedDate]);
 
     if (isAlreadyLogged) {
-      document.getElementById('midnight-timer').innerText = `✅ ESTE DIA JÁ ESTÁ LOGADO!`;
+      document.getElementById('midnight-timer').innerHTML = `✅ THIS DAY IS ALREADY LOGGED!`;
       return;
     }
 
