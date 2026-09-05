@@ -777,6 +777,7 @@
     if (state.pendingSugar === 'clean') {
       let addMult = 1;
       if (activeJoker.id === 'sugar_rush') addMult = 2;
+      if (activeJoker.id === 'sweet_saver') addMult += 1; // <--- Adicionado para o Sweet Saver dar +1 extra no mult
       if (activeJoker.id === 'sugar_cleanse' && state.multiplier === 0) addMult = 3;
       if (activeJoker.id === 'mult_doubler' && state.multiplier > 5) addMult = 2;
       if (activeJoker.id === 'iron_grip' && volumeLifted >= 3000) addMult += 1;
@@ -792,7 +793,7 @@
       state.sugarSkips--;
       state.cleanStreak = 0;
       if (activeJoker.id === 'sweet_saver' || activeJoker.id === 'skip_master') state.multiplier++;
-    } else if (state.pendingSugar === 'reset') {
+    } else if (state.pendingSugar === 'viol') {
       state.cleanStreak = 0;
       if (activeJoker.id === 'phoenix_feather') {
         state.multiplier = Math.floor(state.multiplier / 2);
@@ -899,23 +900,23 @@
 
   document.getElementById('btn-s-clean').onclick = (e) => selectSugar('clean', e.currentTarget);
   document.getElementById('btn-s-skip').onclick = (e) => selectSugar('skip', e.currentTarget);
-  document.getElementById('btn-s-viol').onclick = (e) => selectSugar('reset', e.currentTarget);
+  document.getElementById('btn-s-viol').onclick = (e) => selectSugar('viol', e.currentTarget);
 
   document.getElementById('btn-calculate').onclick = calculateRoundScore;
 
   document.getElementById('btn-reset-game').onclick = async () => {
-    if (confirm("Are you sure you want to reset all campaign data in Firebase?")) {
-      state = { ...defaultState };
+    if (confirm("Are you sure you want to reset all campaign progress? This cannot be undone!")) {
+      state = { ...defaultState, dailyLogs: {} };
       await saveStateToFirebase();
-      resetSelectionToDefaults();
-      updateUI();
+      location.reload();
     }
   };
 
-  setInterval(updateTimer, 1000);
-  updateTimer();
-  loadStateFromFirebase();
+  // INITIALIZATION
+  window.addEventListener('DOMContentLoaded', () => {
+    loadStateFromFirebase();
+    setInterval(updateTimer, 1000);
+  });
 </script>
-
 </body>
 </html>
