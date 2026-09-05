@@ -14,6 +14,7 @@
       --card-border: #1f293d;
       --green: #10b981;
       --blue: #3b82f6;
+      --red: #ef4444;
       --white: #ffffff;
       --muted: #6b7280;
     }
@@ -137,16 +138,28 @@
       line-height: 1.2;
       min-height: 54px;
       transition: all 0.2s;
+      opacity: 0.4;
+    }
+
+    .btn.active {
+      opacity: 1 !important;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
     }
     
     .btn:hover:not(:disabled), .btn:active:not(:disabled) { 
-      background: rgba(255, 255, 255, 0.08); 
-      border-color: var(--blue); 
+      opacity: 0.9;
     }
     .btn:disabled { opacity: 0.25; cursor: not-allowed; }
     
     .btn-green { border-color: var(--green); color: var(--green); }
     .btn-blue { border-color: var(--blue); color: var(--blue); }
+    
+    /* Highlighted Violation Buttons */
+    .btn-red { 
+      border: 1.5px solid var(--red) !important; 
+      color: var(--red) !important; 
+      background: rgba(239, 68, 68, 0.08) !important;
+    }
     
     .btn-next { 
       font-family: 'Press Start 2P', monospace;
@@ -161,6 +174,7 @@
       width: 100%;
       border-radius: 6px;
       cursor: pointer;
+      opacity: 1;
     }
     
     .section-title { 
@@ -296,7 +310,7 @@
     }
 
     .lock-notice {
-      color: #ef4444;
+      color: var(--red);
       font-size: 0.75rem;
       text-align: center;
       margin-top: 6px;
@@ -312,7 +326,7 @@
   <!-- PROGRESS DASHBOARD -->
   <div class="card">
     <div class="main-title">🎄 No Sugar Til Xmas 🎄</div>
-    <div class="sync-status" id="sync-status">⚡ A LIGAR AO FIREBASE...</div>
+    <div class="sync-status" id="sync-status">⚡ CONNECTING TO FIREBASE...</div>
     <div class="header" id="ante-title">ANTE 1 / 16</div>
     <div style="text-align: center; margin-top: 4px;">
       <span class="status-badge" id="round-tracker">ROUND 1 OF 7</span>
@@ -320,7 +334,7 @@
     
     <!-- Daily Summary Panel -->
     <div class="daily-summary-panel" id="daily-summary-panel">
-      <div class="daily-summary-title" id="summary-date-title">RESUMO DO DIA</div>
+      <div class="daily-summary-title" id="summary-date-title">DAILY SUMMARY</div>
       <div class="daily-summary-details" id="summary-details">---</div>
     </div>
 
@@ -330,7 +344,7 @@
         <div class="stat-lbl">Active Mult</div>
       </div>
       <div class="stat-box">
-        <div class="stat-val" id="skips-display" style="font-size: 0.85rem; margin-top: 2px;">🏋️5 | 🛡️1</div>
+        <div class="stat-val" id="skips-display" style="font-size: 0.85rem; margin-top: 2px;">🏋️5 | 🍬1</div>
         <div class="stat-lbl">Skips Left</div>
       </div>
     </div>
@@ -370,19 +384,19 @@
   <div class="card">
     <div class="section-title">Log Date</div>
     <div class="date-picker-box">
-      <span style="font-size: 0.8rem; font-weight: 700;">📅 DATA:</span>
+      <span style="font-size: 0.8rem; font-weight: 700;">📅 DATE:</span>
       <input type="date" id="log-date-picker" min="2026-09-01">
     </div>
     
-    <div class="lock-notice" id="lock-notice">⚠️ PRECISE DE REGISTAR O DIA ANTERIOR PRIMEIRO!</div>
+    <div class="lock-notice" id="lock-notice">⚠️ YOU MUST LOG THE PREVIOUS DAY FIRST!</div>
 
     <div id="log-controls-container">
       <div class="section-title">1. Workout Log</div>
       <div class="btn-grid">
-        <button class="btn btn-green" id="btn-w-gym"><span>🏋️ Gym + Pushups</span><span style="font-size: 0.7rem; color: var(--muted);">(100 Chips)</span></button>
+        <button class="btn btn-green active" id="btn-w-gym"><span>🏋️ Gym + Pushups</span><span style="font-size: 0.7rem; color: var(--muted);">(100 Chips)</span></button>
         <button class="btn btn-green" id="btn-w-home"><span>🏠 Home + Pushups</span><span style="font-size: 0.7rem; color: var(--muted);">(100 Chips)</span></button>
         <button class="btn btn-blue" id="btn-w-skip"><span>🛡️ Workout Skip</span><span id="skip-chip-val" style="font-size: 0.7rem; color: var(--muted);">(25 Chips)</span></button>
-        <button class="btn" id="btn-w-viol"><span>⚠️ Violation</span><span style="font-size: 0.7rem; color: var(--muted);">(0 Chips)</span></button>
+        <button class="btn btn-red" id="btn-w-viol"><span>⚠️ Violation</span><span style="font-size: 0.7rem; color: #fca5a5;">(0 Chips)</span></button>
       </div>
 
       <!-- Caliber Volume Input -->
@@ -397,13 +411,13 @@
       <div style="margin-top: 10px; border-top: 1px dashed var(--card-border); padding-top: 8px;">
         <div class="section-title">2. Sugar Log</div>
         <div class="btn-grid">
-          <button class="btn btn-green" id="btn-s-clean"><span>✅ Sugar Free</span><span style="font-size: 0.7rem; color: var(--muted);">(+1 Mult)</span></button>
-          <button class="btn btn-blue" id="btn-s-skip"><span>🛡️ Sugar Skip</span><span style="font-size: 0.7rem; color: var(--muted);">(Keep Mult)</span></button>
-          <button class="btn" id="btn-s-viol" style="grid-column: span 2;"><span>⚠️ Sugar Violation</span><span style="font-size: 0.7rem; color: var(--muted);">(Reset Mult to 0)</span></button>
+          <button class="btn btn-green active" id="btn-s-clean"><span>✅ Sugar Free</span><span style="font-size: 0.7rem; color: var(--muted);">(+1 Mult)</span></button>
+          <button class="btn btn-blue" id="btn-s-skip"><span>🍬 Sugar Skip</span><span style="font-size: 0.7rem; color: var(--muted);">(Keep Mult)</span></button>
+          <button class="btn btn-red" id="btn-s-viol" style="grid-column: span 2;"><span>⚠️ Sugar Violation</span><span style="font-size: 0.7rem; color: #fca5a5;">(Reset Mult to 0)</span></button>
         </div>
       </div>
 
-      <button class="btn btn-next" id="btn-calculate" disabled>END ROUND</button>
+      <button class="btn btn-next" id="btn-calculate">END ROUND</button>
     </div>
 
     <div class="timer-box" id="midnight-timer"></div>
@@ -454,8 +468,8 @@
     activeJokerSlot: 0,
     equippedJokers: [jokerPool[0], jokerPool[1], jokerPool[2], jokerPool[3]],
     dailyLogs: {},
-    pendingWorkout: null,
-    pendingSugar: null
+    pendingWorkout: 'gym',
+    pendingSugar: 'clean'
   };
 
   let state = { ...defaultState };
@@ -473,7 +487,7 @@
   }
 
   function getNextSequentialDate() {
-    let baseDate = new Date(2026, 8, 1); // 1 de Setembro de 2026
+    let baseDate = new Date(2026, 8, 1);
     while (true) {
       let dateStr = formatDateLocal(baseDate);
       if (!state.dailyLogs || !state.dailyLogs[dateStr]) {
@@ -492,11 +506,11 @@
       } else {
         await saveStateToFirebase();
       }
-      document.getElementById('sync-status').innerText = "☁️ DADOS NA CLOUD";
+      document.getElementById('sync-status').innerText = "☁️ CLOUD SYNCED";
       document.getElementById('sync-status').style.color = "var(--green)";
     } catch (e) {
-      console.error("Erro ao carregar do Firebase:", e);
-      document.getElementById('sync-status').innerText = "⚠️ ERRO DE LIGAÇÃO (MODO OFFLINE)";
+      console.error("Firebase connection error:", e);
+      document.getElementById('sync-status').innerText = "⚠️ CONNECTION ERROR (OFFLINE MODE)";
       document.getElementById('sync-status').style.color = "#f59e0b";
     }
 
@@ -508,19 +522,20 @@
     let nextAllowed = getNextSequentialDate();
     datePicker.value = (nextAllowed <= today) ? nextAllowed : today;
 
+    resetSelectionToDefaults();
     updateUI();
   }
 
   async function saveStateToFirebase() {
     try {
-      document.getElementById('sync-status').innerText = "⏳ A GUARDAR...";
+      document.getElementById('sync-status').innerText = "⏳ SAVING...";
       await setDoc(docRef, state);
-      document.getElementById('sync-status').innerText = "☁️ DADOS NA CLOUD";
+      document.getElementById('sync-status').innerText = "☁️ CLOUD SYNCED";
       document.getElementById('sync-status').style.color = "var(--green)";
     } catch (e) {
-      console.error("Erro ao guardar no Firebase:", e);
-      document.getElementById('sync-status').innerText = "⚠️ ERRO AO GUARDAR DADOS";
-      document.getElementById('sync-status').style.color = "#ef4444";
+      console.error("Firebase save error:", e);
+      document.getElementById('sync-status').innerText = "⚠️ ERROR SAVING DATA";
+      document.getElementById('sync-status').style.color = "var(--red)";
     }
   }
 
@@ -537,11 +552,26 @@
     });
   }
 
+  function resetSelectionToDefaults() {
+    state.pendingWorkout = 'gym';
+    state.pendingSugar = 'clean';
+    
+    ['btn-w-gym', 'btn-w-home', 'btn-w-skip', 'btn-w-viol'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
+    ['btn-s-clean', 'btn-s-skip', 'btn-s-viol'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
+
+    document.getElementById('btn-w-gym').classList.add('active');
+    document.getElementById('btn-s-clean').classList.add('active');
+  }
+
   function updateUI() {
     document.getElementById('ante-title').innerText = `ANTE ${state.ante} / 16`;
     document.getElementById('round-tracker').innerText = `ROUND ${state.roundInAnte} OF 7`;
     document.getElementById('current-mult').innerText = `+${state.multiplier}`;
-    document.getElementById('skips-display').innerText = `🏋️ ${state.workoutSkips} | 🛡️ ${state.sugarSkips}`;
+    document.getElementById('skips-display').innerText = `🏋️ ${state.workoutSkips} | 🍬 ${state.sugarSkips}`;
     
     let activeJoker = state.equippedJokers[state.activeJokerSlot];
     let skipValue = (activeJoker && activeJoker.id === 'iron_will') ? '50 Chips' : '25 Chips';
@@ -573,25 +603,24 @@
       controlsContainer.style.display = 'none';
 
       let workoutText = { 'gym': '🏋️ Gym', 'home': '🏠 Home', 'skip': '🛡️ Workout Skip', 'viol': '⚠️ Violation' }[log.workout] || log.workout;
-      let sugarText = { 'clean': '✅ Clean', 'skip': '🛡️ Sugar Skip', 'reset': '⚠️ Violation' }[log.sugar] || log.sugar;
+      let sugarText = { 'clean': '✅ Sugar Free', 'skip': '🍬 Sugar Skip', 'reset': '⚠️ Violation' }[log.sugar] || log.sugar;
 
-      document.getElementById('summary-date-title').innerText = `RESUMO DO DIA (${selectedDate})`;
+      document.getElementById('summary-date-title').innerText = `DAILY SUMMARY (${selectedDate})`;
       document.getElementById('summary-details').innerHTML = `
-        <b>Treino:</b> ${workoutText} | <b>Volume:</b> ${log.volume || 0} kg<br>
-        <b>Açúcar:</b> ${sugarText}<br>
-        <b>Pontuação:</b> +${log.score || 0} Chips
+        <b>Workout:</b> ${workoutText} | <b>Volume:</b> ${log.volume || 0} kg<br>
+        <b>Sugar:</b> ${sugarText}<br>
+        <b>Score:</b> +${log.score || 0} Chips
       `;
     } else if (selectedDate > nextSequential) {
       summaryPanel.style.display = 'none';
       lockNotice.style.display = 'block';
-      lockNotice.innerText = `⚠️ PRECISE DE REGISTAR PRIMEIRO O DIA ${nextSequential}!`;
+      lockNotice.innerText = `⚠️ YOU MUST LOG ${nextSequential} FIRST!`;
       controlsContainer.style.display = 'none';
     } else {
       summaryPanel.style.display = 'none';
       lockNotice.style.display = 'none';
       controlsContainer.style.display = 'block';
 
-      document.getElementById('workout-volume').value = '';
       document.getElementById('btn-calculate').disabled = !(state.pendingWorkout !== null && state.pendingSugar !== null);
     }
     
@@ -614,8 +643,10 @@
     }
     state.pendingWorkout = type;
     
-    ['btn-w-gym', 'btn-w-home', 'btn-w-skip', 'btn-w-viol'].forEach(id => document.getElementById(id).style.opacity = '0.3');
-    el.style.opacity = '1';
+    ['btn-w-gym', 'btn-w-home', 'btn-w-skip', 'btn-w-viol'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
+    el.classList.add('active');
     
     updateUI();
   }
@@ -630,8 +661,10 @@
     }
     state.pendingSugar = type;
 
-    ['btn-s-clean', 'btn-s-skip', 'btn-s-viol'].forEach(id => document.getElementById(id).style.opacity = '0.3');
-    el.style.opacity = '1';
+    ['btn-s-clean', 'btn-s-skip', 'btn-s-viol'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
+    el.classList.add('active');
 
     updateUI();
   }
@@ -647,7 +680,7 @@
       let newJoker = availablePool[Math.floor(Math.random() * availablePool.length)];
       let oldJokerName = state.equippedJokers[targetSlot].name;
       state.equippedJokers[targetSlot] = newJoker;
-      alert(`🔄 JOKER ROTATION:\n"${oldJokerName}" foi substituído por "${newJoker.name}"!`);
+      alert(`🔄 JOKER ROTATION:\n"${oldJokerName}" was replaced by "${newJoker.name}"!`);
     }
   }
 
@@ -698,9 +731,8 @@
 
     rotateUnselectedJoker();
 
-    state.pendingWorkout = null;
-    state.pendingSugar = null;
-    ['btn-w-gym', 'btn-w-home', 'btn-w-skip', 'btn-w-viol', 'btn-s-clean', 'btn-s-skip', 'btn-s-viol'].forEach(id => document.getElementById(id).style.opacity = '1');
+    document.getElementById('workout-volume').value = '';
+    resetSelectionToDefaults();
 
     state.roundInAnte++;
 
@@ -744,11 +776,7 @@
 
   // EVENT LISTENERS
   document.getElementById('log-date-picker').addEventListener('change', () => {
-    state.pendingWorkout = null;
-    state.pendingSugar = null;
-    ['btn-w-gym', 'btn-w-home', 'btn-w-skip', 'btn-w-viol', 'btn-s-clean', 'btn-s-skip', 'btn-s-viol'].forEach(id => {
-      document.getElementById(id).style.opacity = '1';
-    });
+    resetSelectionToDefaults();
     updateUI();
   });
 
@@ -764,9 +792,10 @@
   document.getElementById('btn-calculate').onclick = calculateRoundScore;
 
   document.getElementById('btn-reset-game').onclick = async () => {
-    if (confirm("Tem a certeza que quer reiniciar o progresso do desafio no Firebase?")) {
+    if (confirm("Are you sure you want to reset all campaign data in Firebase?")) {
       state = { ...defaultState };
       await saveStateToFirebase();
+      resetSelectionToDefaults();
       updateUI();
     }
   };
