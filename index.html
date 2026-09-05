@@ -445,9 +445,9 @@
         <button class="btn btn-red" id="btn-w-viol"><span>⚠️ Violation</span><span style="font-size: 0.7rem; color: #fca5a5;">(0 Chips)</span></button>
       </div>
 
-      <!-- Caliber Volume Input -->
+      <!-- Volume Input -->
       <div class="volume-box">
-        <span style="font-size: 0.75rem; font-weight: 700;">🏋️ VOLUME LIFTED (CALIBER):</span>
+        <span style="font-size: 0.75rem; font-weight: 700;">🏋️ VOLUME LIFTED:</span>
         <div>
           <input type="number" id="workout-volume" placeholder="0" min="0" step="0.5">
           <span style="font-size: 0.7rem; color: var(--muted);">KG</span>
@@ -500,7 +500,20 @@
     { id: 'overdrive', name: '⚡ Overdrive', desc: 'Workouts yield 125 Chips.' },
     { id: 'chip_boost', name: '⚡ Chip Booster', desc: 'Base workouts give +20 extra Chips.' },
     { id: 'sugar_rush', name: '⚡ Sugar Rush', desc: 'Sugar Free gives +2 Mult instead of +1.' },
-    { id: 'skip_master', name: '⚡ Skip Master', desc: 'Skips give +1 Mult when used.' }
+    { id: 'skip_master', name: '⚡ Skip Master', desc: 'Skips give +1 Mult when used.' },
+    { id: 'heavy_lifter', name: '⚡ Heavy Lifter', desc: '+1 Base Chip per 100 kg lifted.' },
+    { id: 'daily_streak', name: '⚡ Daily Streak', desc: '+5 Chips per current active Mult.' },
+    { id: 'weekend_warrior', name: '⚡ Weekend Warrior', desc: 'Sat/Sun workouts yield +40 extra Chips.' },
+    { id: 'sugar_cleanse', name: '⚡ Sugar Cleanse', desc: 'If Mult is 0, Sugar Free gives +3 Mult.' },
+    { id: 'phoenix_feather', name: '⚡ Phoenix Feather', desc: 'Sugar Violation keeps 50% Mult instead of 0.' },
+    { id: 'iron_grip', name: '⚡ Iron Grip', desc: 'Lifting >3,000 kg adds +1 bonus Mult.' },
+    { id: 'glass_cannon', name: '⚡ Glass Cannon', desc: '+100 Base Chips, but Sugar Violation wipes Sugar Skips.' },
+    { id: 'last_stand', name: '⚡ Last Stand', desc: 'If 0 Skips left, clean workouts give +50% Chips.' },
+    { id: 'rest_day', name: '⚡ Rest Day Insurance', desc: 'Workout Skip keeps active Mult intact.' },
+    { id: 'santas_favor', name: '⚡ Santa Favor', desc: '+10 extra Chips per completed Ante.' },
+    { id: 'mult_doubler', name: '⚡ Mult Doubler', desc: 'If Mult > 5, Sugar Free grants +2 Mult.' },
+    { id: 'combo_breaker', name: '⚡ Combo Breaker', desc: '3 consecutive clean days grants +1 Sugar Skip.' },
+    { id: 'end_game', name: '⚡ End Game', desc: 'Rounds 6 & 7 of any Ante yield 1.25x Chips.' }
   ];
 
   const defaultState = {
@@ -511,6 +524,7 @@
     sugarSkips: 1,
     anteChips: 0,
     totalChips: 0,
+    cleanStreak: 0,
     activeJokerSlot: 0,
     equippedJokers: [jokerPool[0], jokerPool[1], jokerPool[2], jokerPool[3]],
     dailyLogs: {},
@@ -549,6 +563,7 @@
       if (docSnap.exists()) {
         state = { ...defaultState, ...docSnap.data() };
         if (state.workoutSkips === undefined) state.workoutSkips = 5;
+        if (state.cleanStreak === undefined) state.cleanStreak = 0;
       } else {
         await saveStateToFirebase();
       }
@@ -731,49 +746,93 @@
   }
 
   async function calculateRoundScore() {
-    let selectedDate = document.getElementById('log-date-picker').value;
+    let selectedDateStr = document.getElementById('log-date-picker').value;
     if (!state.dailyLogs) state.dailyLogs = {};
-    if (state.dailyLogs[selectedDate]) return;
+    if (state.dailyLogs[selectedDateStr]) return;
 
     let volumeLifted = parseFloat(document.getElementById('workout-volume').value) || 0;
     let activeJoker = state.equippedJokers[state.activeJokerSlot];
     let baseChips = 0;
 
+    let logDateObj = new Date(selectedDateStr + "T00:00:00");
+    let dayOfWeek = logDateObj.getDay(); // 0 = Sun, 6 = Sat
+
+    // 1. WORKOUT LOGIC
     if (state.pendingWorkout === 'gym' || state.pendingWorkout === 'home') {
       baseChips = (activeJoker.id === 'overdrive') ? 125 : 100;
       if (activeJoker.id === 'chip_boost') baseChips += 20;
+      if (activeJoker.id === 'heavy_lifter') baseChips += Math.floor(volumeLifted / 100);
+      if (activeJoker.id === 'weekend_warrior' && (dayOfWeek === 0 || dayOfWeek === 6)) baseChips += 40;
+      if (activeJoker.id === 'glass_cannon') baseChips += 100;
     } else if (state.pendingWorkout === 'skip') {
       state.workoutSkips--;
       baseChips = (activeJoker.id === 'iron_will') ? 50 : 25;
       if (activeJoker.id === 'skip_master') state.multiplier++;
     }
 
+    if (activeJoker.id === 'daily_streak') baseChips += (state.multiplier * 5);
+    if (activeJoker.id === 'santas_favor') baseChips += ((state.ante - 1) * 10);
+
+    // 2. SUGAR LOGIC & MULTIPLIER
     if (state.pendingSugar === 'clean') {
-      state.multiplier += (activeJoker.id === 'sugar_rush') ? 2 : 1;
+      let addMult = 1;
+      if (activeJoker.id === 'sugar_rush') addMult = 2;
+      if (activeJoker.id === 'sugar_cleanse' && state.multiplier === 0) addMult = 3;
+      if (activeJoker.id === 'mult_doubler' && state.multiplier > 5) addMult = 2;
+      if (activeJoker.id === 'iron_grip' && volumeLifted >= 3000) addMult += 1;
+
+      state.multiplier += addMult;
+      state.cleanStreak++;
+
+      if (activeJoker.id === 'combo_breaker' && state.cleanStreak % 3 === 0) {
+        state.sugarSkips++;
+        alert("🔥 COMBO BREAKER! 3 Clean Days Streak = Gained +1 Sugar Skip!");
+      }
     } else if (state.pendingSugar === 'skip') {
       state.sugarSkips--;
+      state.cleanStreak = 0;
       if (activeJoker.id === 'sweet_saver' || activeJoker.id === 'skip_master') state.multiplier++;
     } else if (state.pendingSugar === 'reset') {
-      state.multiplier = 0;
+      state.cleanStreak = 0;
+      if (activeJoker.id === 'phoenix_feather') {
+        state.multiplier = Math.floor(state.multiplier / 2);
+        alert(`🪶 PHOENIX FEATHER: Kept ${state.multiplier} Mult instead of resetting to 0!`);
+      } else {
+        state.multiplier = 0;
+      }
+
+      if (activeJoker.id === 'glass_cannon') {
+        state.sugarSkips = 0;
+        alert("💥 GLASS CANNON: Sugar Violation wiped out all your Sugar Skips!");
+      }
     }
 
+    // 3. SCORE CALCULATION
     let roundScore = baseChips * state.multiplier;
 
     if (activeJoker.id === 'double_down' && (state.pendingWorkout === 'gym' || state.pendingWorkout === 'home') && state.pendingSugar === 'clean') {
       roundScore = Math.round(roundScore * 1.5);
     }
 
+    if (activeJoker.id === 'last_stand' && state.workoutSkips === 0 && state.sugarSkips === 0) {
+      roundScore = Math.round(roundScore * 1.5);
+    }
+
+    if (activeJoker.id === 'end_game' && (state.roundInAnte === 6 || state.roundInAnte === 7)) {
+      roundScore = Math.round(roundScore * 1.25);
+    }
+
     state.anteChips += roundScore;
     state.totalChips += roundScore;
 
-    state.dailyLogs[selectedDate] = {
+    state.dailyLogs[selectedDateStr] = {
       workout: state.pendingWorkout,
       sugar: state.pendingSugar,
       volume: volumeLifted,
       score: roundScore
     };
 
-    alert(`DATE ${selectedDate} LOGGED!\nEarned: ${roundScore} Chips (${baseChips} Chips x ${state.multiplier} Mult)\nVolume: ${volumeLifted} kg`);
+    alert(`DATE ${selectedDateStr} LOGGED!\nEarned: ${roundScore} Chips (${baseChips} Chips x ${state.multiplier} Mult)\nVolume: ${volumeLifted} kg`);
 
     rotateUnselectedJoker();
 
