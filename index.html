@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
   
-  <!-- Firebase SDKs (Compat version) -->
+  <!-- SDKs do Firebase (Versão Compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -71,7 +71,7 @@
       margin-bottom: 10px;
     }
 
-    /* Score Display Panel */
+    /* Painel de Pontuação Balatro */
     .score-panel {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -116,7 +116,7 @@
       text-transform: uppercase;
     }
 
-    /* Daily Log Options */
+    /* Opções do Registo Diário */
     .option-row {
       display: flex;
       align-items: center;
@@ -184,7 +184,7 @@
 
 <div class="container">
 
-  <!-- MAIN BALATRO HEADER & SCORES -->
+  <!-- CABEÇALHO E PONTUAÇÃO -->
   <div class="card">
     <div class="header-title">🃏 NO SUGAR 'TIL XMAS 🃏</div>
     <div class="header-sub">CARLOS' BALATRO QUEST</div>
@@ -215,28 +215,20 @@
     <button class="btn-main" id="btn-submit-day">SUBMIT DAY LOG</button>
   </div>
 
-  <!-- ACTIVE JOKERS SECTION -->
+  <!-- JOKERS ATIVOS -->
   <div class="card">
     <div class="section-title">ACTIVE JOKERS</div>
     
     <div class="joker-card">
       <div>
         <div class="joker-title">🍰 Sweet Saver</div>
-        <div class="joker-desc">No sugar penalty protection</div>
-      </div>
-      <span style="color: var(--balatro-green); font-weight: bold;">+1 Mult</span>
-    </div>
-
-    <div class="joker-card">
-      <div>
-        <div class="joker-title">🚫 Sugar Free</div>
-        <div class="joker-desc">Clean day streak bonus</div>
+        <div class="joker-desc">Proteção contra penalidade de açúcar</div>
       </div>
       <span style="color: var(--balatro-green); font-weight: bold;">+1 Mult</span>
     </div>
   </div>
 
-  <!-- SKIPS & RESOURCE TRACKER -->
+  <!-- RASTREADOR DE RECURSOS E SKIPS -->
   <div class="card">
     <div class="section-title">CAMPAIGN SKIPS</div>
     <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: bold;">
@@ -272,7 +264,7 @@
   const displayMult = document.getElementById('display-mult');
   const btnSubmit = document.getElementById('btn-submit-day');
 
-  // LOAD CARLOS DATA FROM FIREBASE
+  // CARREGAR DADOS DO CARLOS DO FIREBASE
   db.collection("users").doc("carlos").get().then((doc) => {
     if (doc.exists) {
       const data = doc.data();
@@ -284,22 +276,17 @@
     }
   }).catch(err => console.log("Load error:", err));
 
-  // CORREÇÃO EXATA DO BUG DOS MULTIPLICADORES ACUMULATIVOS
+  // LÓGICA REVERTIDA ORIGINAL: REGISTO DIÁRIO E APLICAÇÃO DO MULTIPLICADOR
   btnSubmit.onclick = () => {
-    let currentMult = 1; // Multiplicador Base
-
-    // 1. Efeito do Sugar Free Logged
+    // Se cumpriu o dia Sugar Free, atribui +1 de multiplicador
     if (chkSugarFree.checked) {
-      currentMult += 1; // +1 Mult por dia sem açúcar
+      mult = 2; 
+    } else {
+      // Se falhou o açúcar mas não tem proteção, o multiplicador desce para 0
+      mult = 0; 
     }
 
-    // 2. Efeito do Sweet Saver (Joker ativo)
-    // SOMA INDEPENDENTE (+1 Mult sem sobrepor o Sugar Free)
-    currentMult += 1;
-
-    mult = currentMult;
-
-    // Cálculo dos Chips
+    // Ganho de Chips pelo Treino
     if (chkWorkout.checked) {
       chips += 100;
     }
