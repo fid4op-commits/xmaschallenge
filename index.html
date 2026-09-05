@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>No Sugar Til Xmas Challenge</title>
+  <title>No Sugar 'Til Xmas Challenge</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
@@ -63,6 +63,40 @@
       text-align: center; 
       font-size: 0.9rem; 
       color: var(--green); 
+    }
+
+    /* Rules Collapsible Section */
+    .rules-toggle {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      color: var(--blue);
+      text-align: center;
+      padding: 6px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px dashed var(--blue);
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 4px;
+      user-select: none;
+    }
+
+    .rules-content {
+      display: none;
+      font-size: 0.8rem;
+      color: #d1d5db;
+      line-height: 1.4;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--card-border);
+    }
+
+    .rules-content ul {
+      margin: 4px 0 0 0;
+      padding-left: 18px;
+    }
+
+    .rules-content li {
+      margin-bottom: 4px;
     }
 
     .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
@@ -154,7 +188,6 @@
     .btn-green { border-color: var(--green); color: var(--green); }
     .btn-blue { border-color: var(--blue); color: var(--blue); }
     
-    /* Highlighted Violation Buttons */
     .btn-red { 
       border: 1.5px solid var(--red) !important; 
       color: var(--red) !important; 
@@ -325,9 +358,22 @@
 
   <!-- PROGRESS DASHBOARD -->
   <div class="card">
-    <div class="main-title">🎄 No Sugar Til Xmas 🎄</div>
+    <div class="main-title">🎄 No Sugar 'Til Xmas 🎄</div>
     <div class="sync-status" id="sync-status">⚡ CONNECTING TO FIREBASE...</div>
-    <div class="header" id="ante-title">ANTE 1 / 16</div>
+    
+    <!-- Collapsible Challenge Rules -->
+    <div class="rules-toggle" id="rules-toggle">📜 HOW TO PLAY & RULES ▼</div>
+    <div class="rules-content" id="rules-content">
+      <ul>
+        <li><b>Daily Scoring:</b> Daily Chips = Base Chips × Active Multiplier.</li>
+        <li><b>Workouts:</b> Gym / Home workouts grant <b>100 Base Chips</b>. Workout Skip grants 25 Chips. Violations give 0 Chips.</li>
+        <li><b>Sugar Control:</b> Sugar Free days add <b>+1 Multiplier</b>. Sugar Skip maintains your Mult. Sugar Violations <b>reset Multiplier to 0</b>.</li>
+        <li><b>Perks:</b> Select 1 active Perk per round to gain bonuses. Unselected Perks rotate automatically after each round!</li>
+        <li><b>Ante Goals:</b> Each Ante lasts 7 Rounds. Reach the Chip Target before the 7 rounds end to clear the Ante!</li>
+      </ul>
+    </div>
+
+    <div class="header" id="ante-title" style="margin-top: 8px;">ANTE 1 / 16</div>
     <div style="text-align: center; margin-top: 4px;">
       <span class="status-badge" id="round-tracker">ROUND 1 OF 7</span>
     </div>
@@ -372,9 +418,9 @@
     </div>
   </div>
 
-  <!-- JOKER SELECTOR -->
+  <!-- PERKS SELECTOR -->
   <div class="card">
-    <div class="section-title">Active Jokers</div>
+    <div class="section-title">Active Perks</div>
     <div class="joker-grid" id="joker-container">
       <!-- Generated via JS -->
     </div>
@@ -448,13 +494,13 @@
   const docRef = doc(db, "challenges", DOC_ID);
 
   const jokerPool = [
-    { id: 'double_down', name: '🃏 Double Down', desc: '+50% Chips on clean rounds.' },
-    { id: 'iron_will', name: '🃏 Iron Will', desc: 'Workout Skip gives 50 Chips.' },
-    { id: 'sweet_saver', name: '🃏 Sweet Saver', desc: 'Sugar Skip adds +1 Mult.' },
-    { id: 'overdrive', name: '🃏 Overdrive', desc: 'Workouts yield 125 Chips.' },
-    { id: 'chip_boost', name: '🃏 Chip Booster', desc: 'Base workouts give +20 extra Chips.' },
-    { id: 'sugar_rush', name: '🃏 Sugar Rush', desc: 'Sugar Free gives +2 Mult instead of +1.' },
-    { id: 'skip_master', name: '🃏 Skip Master', desc: 'Skips give +1 Mult when used.' }
+    { id: 'double_down', name: '⚡ Double Down', desc: '+50% Chips on clean rounds.' },
+    { id: 'iron_will', name: '⚡ Iron Will', desc: 'Workout Skip gives 50 Chips.' },
+    { id: 'sweet_saver', name: '⚡ Sweet Saver', desc: 'Sugar Skip adds +1 Mult.' },
+    { id: 'overdrive', name: '⚡ Overdrive', desc: 'Workouts yield 125 Chips.' },
+    { id: 'chip_boost', name: '⚡ Chip Booster', desc: 'Base workouts give +20 extra Chips.' },
+    { id: 'sugar_rush', name: '⚡ Sugar Rush', desc: 'Sugar Free gives +2 Mult instead of +1.' },
+    { id: 'skip_master', name: '⚡ Skip Master', desc: 'Skips give +1 Mult when used.' }
   ];
 
   const defaultState = {
@@ -680,7 +726,7 @@
       let newJoker = availablePool[Math.floor(Math.random() * availablePool.length)];
       let oldJokerName = state.equippedJokers[targetSlot].name;
       state.equippedJokers[targetSlot] = newJoker;
-      alert(`🔄 JOKER ROTATION:\n"${oldJokerName}" was replaced by "${newJoker.name}"!`);
+      alert(`🔄 PERK ROTATION:\n"${oldJokerName}" was replaced by "${newJoker.name}"!`);
     }
   }
 
@@ -775,6 +821,13 @@
   }
 
   // EVENT LISTENERS
+  document.getElementById('rules-toggle').onclick = () => {
+    const content = document.getElementById('rules-content');
+    const isVisible = content.style.display === 'block';
+    content.style.display = isVisible ? 'none' : 'block';
+    document.getElementById('rules-toggle').innerText = isVisible ? '📜 HOW TO PLAY & RULES ▼' : '📜 HOW TO PLAY & RULES ▲';
+  };
+
   document.getElementById('log-date-picker').addEventListener('change', () => {
     resetSelectionToDefaults();
     updateUI();
