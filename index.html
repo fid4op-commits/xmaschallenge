@@ -422,27 +422,98 @@
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
     }
 
+    /* VIBRANT & COLORFUL LOGGED ZONE REDESIGN */
     .daily-summary-panel {
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid var(--green);
-      border-radius: 6px;
-      padding: 8px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(59, 130, 246, 0.15));
+      border: 2px solid var(--green);
+      border-radius: 10px;
+      padding: 14px;
       margin-top: 10px;
       text-align: center;
       display: none;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
     }
 
     .daily-summary-title {
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.6rem;
+      font-size: 0.65rem;
       color: var(--green);
-      margin-bottom: 4px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
 
-    .daily-summary-details {
-      font-size: 0.8rem;
+    .logged-status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(16, 185, 129, 0.25);
+      border: 1.5px solid var(--green);
       color: var(--white);
-      line-height: 1.3;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.55rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      width: 100%;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      box-shadow: inset 0 0 8px rgba(16, 185, 129, 0.2);
+    }
+
+    .logged-pills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .logged-pill {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .logged-pill-label {
+      font-size: 0.6rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .logged-pill-value {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .logged-chips-banner {
+      background: rgba(59, 130, 246, 0.2);
+      border: 1.5px solid var(--blue);
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--white);
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+    }
+
+    .logged-chips-banner span:last-child {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.75rem;
+      color: var(--yellow);
+      text-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
     }
 
     .lock-notice {
@@ -495,10 +566,30 @@
       </div>
     </div>
     
-    <!-- Daily Summary Panel -->
+    <!-- Daily Summary Panel (Vibrant & Colorful Redesign) -->
     <div class="daily-summary-panel" id="daily-summary-panel">
-      <div class="daily-summary-title" id="summary-date-title">DAILY SUMMARY</div>
-      <div class="daily-summary-details" id="summary-details">---</div>
+      <div class="daily-summary-title">
+        <span>✨</span> <span id="summary-date-title">DAILY SUMMARY</span> <span>✨</span>
+      </div>
+      <div class="logged-status-badge">✅ THIS DAY IS ALREADY LOGGED!</div>
+      <div class="logged-pills-grid">
+        <div class="logged-pill">
+          <span class="logged-pill-label">Workout</span>
+          <span class="logged-pill-value" id="summary-workout">---</span>
+        </div>
+        <div class="logged-pill">
+          <span class="logged-pill-label">Load Lifted</span>
+          <span class="logged-pill-value" id="summary-load" style="color: var(--yellow);">---</span>
+        </div>
+      </div>
+      <div class="logged-pill" style="margin-bottom: 8px; width: 100%;">
+        <span class="logged-pill-label">Sugar Status</span>
+        <span class="logged-pill-value" id="summary-sugar" style="color: var(--green);">---</span>
+      </div>
+      <div class="logged-chips-banner">
+        <span>CHIPS EARNED:</span>
+        <span id="summary-chips">---</span>
+      </div>
     </div>
 
     <div class="stat-grid">
@@ -871,11 +962,10 @@
       let sugarText = { 'clean': '✅ Sugar Free', 'skip': '🍬 Sugar Skip', 'reset': '⚠️ Violation', 'viol': '⚠️ Violation' }[log.sugar] || log.sugar;
 
       document.getElementById('summary-date-title').innerText = `DAILY SUMMARY (${selectedDate})`;
-      document.getElementById('summary-details').innerHTML = `
-        <b>Workout:</b> ${workoutText} | <b>Load:</b> ${log.volume || 0} kg<br>
-        <b>Sugar:</b> ${sugarText}<br>
-        <b>Chips Earned:</b> +${log.score || 0} Chips
-      `;
+      document.getElementById('summary-workout').innerText = workoutText;
+      document.getElementById('summary-load').innerText = `${log.volume || 0} KG`;
+      document.getElementById('summary-sugar').innerText = sugarText;
+      document.getElementById('summary-chips').innerText = `+${log.score || 0} CHIPS`;
     } else if (selectedDate > nextSequential) {
       summaryPanel.style.display = 'none';
       lockNotice.style.display = 'block';
@@ -1065,11 +1155,7 @@
     let isAlreadyLogged = !!(state.dailyLogs && state.dailyLogs[selectedDate]);
 
     if (isAlreadyLogged) {
-      document.getElementById('midnight-timer').innerHTML = `✅ THIS DAY IS ALREADY LOGGED!<br><br>` +
-        `DAILY SUMMARY (${selectedDate})<br>` +
-        `Workout: ${state.dailyLogs[selectedDate].workout === 'gym' ? '🏋️ Gym' : state.dailyLogs[selectedDate].workout === 'home' ? '🏠 Home' : state.dailyLogs[selectedDate].workout === 'skip' ? '🛡️ Workout Skip' : '⚠️ Violation'} | Load: ${state.dailyLogs[selectedDate].volume || 0} kg<br>` +
-        `Sugar: ${state.dailyLogs[selectedDate].sugar === 'clean' ? '✅ Sugar Free' : state.dailyLogs[selectedDate].sugar === 'skip' ? '🍬 Sugar Skip' : '⚠️ Sugar Violation'}<br>` +
-        `Chips Earned: +${state.dailyLogs[selectedDate].score || 0} Chips`;
+      document.getElementById('midnight-timer').innerText = `✅ DAY ALREADY LOGGED`;
       return;
     }
 
