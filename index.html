@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
   
-  <!-- SDKs do Firebase (Versão Compat) -->
+  <!-- Firebase SDKs (Compat Version) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -71,7 +71,7 @@
       margin-bottom: 10px;
     }
 
-    /* Painel de Pontuação Balatro */
+    /* Score Panel */
     .score-panel {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -116,7 +116,7 @@
       text-transform: uppercase;
     }
 
-    /* Opções do Registo Diário */
+    /* Option Rows */
     .option-row {
       display: flex;
       align-items: center;
@@ -184,7 +184,7 @@
 
 <div class="container">
 
-  <!-- CABEÇALHO E PONTUAÇÃO -->
+  <!-- HEADER & DASHBOARD -->
   <div class="card">
     <div class="header-title">🃏 NO SUGAR 'TIL XMAS 🃏</div>
     <div class="header-sub">CARLOS' BALATRO QUEST</div>
@@ -192,7 +192,7 @@
     <div class="score-panel">
       <div class="score-box">
         <span class="score-label">CHIPS</span>
-        <span class="score-val-chips" id="display-chips">100</span>
+        <span class="score-val-chips" id="display-chips">0</span>
       </div>
       <div class="score-box">
         <span class="score-label">MULT</span>
@@ -215,25 +215,28 @@
     <button class="btn-main" id="btn-submit-day">SUBMIT DAY LOG</button>
   </div>
 
-  <!-- JOKERS ATIVOS -->
+  <!-- PERKS / JOKERS SECTION -->
   <div class="card">
     <div class="section-title">ACTIVE JOKERS</div>
     
     <div class="joker-card">
       <div>
         <div class="joker-title">🍰 Sweet Saver</div>
-        <div class="joker-desc">Proteção contra penalidade de açúcar</div>
+        <div class="joker-desc">Proteção contra falhas no plano de açúcar</div>
       </div>
-      <span style="color: var(--balatro-green); font-weight: bold;">+1 Mult</span>
+      <span style="color: var(--balatro-green); font-weight: bold;">PASSIVO</span>
     </div>
   </div>
 
-  <!-- RASTREADOR DE RECURSOS E SKIPS -->
+  <!-- SKIPS AND CAMPAIGN TRACKER -->
   <div class="card">
-    <div class="section-title">CAMPAIGN SKIPS</div>
-    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: bold;">
+    <div class="section-title">CAMPAIGN STATUS</div>
+    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: bold; margin-bottom: 6px;">
       <span>🏋️ Workout Skips: <b id="val-w-skips" style="color: var(--balatro-yellow);">5</b></span>
       <span>🍬 Sugar Skips: <b id="val-s-skips" style="color: var(--balatro-yellow);">0</b></span>
+    </div>
+    <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+      Ante Progress: <span id="val-ante" style="color: var(--balatro-blue); font-weight: bold;">Ante 1 / 16</span>
     </div>
   </div>
 
@@ -253,10 +256,11 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  let chips = 100;
+  let chips = 0;
   let mult = 1;
   let workoutSkips = 5;
   let sugarSkips = 0;
+  let currentAnte = 1;
 
   const chkWorkout = document.getElementById('chk-workout');
   const chkSugarFree = document.getElementById('chk-sugarfree');
@@ -264,29 +268,26 @@
   const displayMult = document.getElementById('display-mult');
   const btnSubmit = document.getElementById('btn-submit-day');
 
-  // CARREGAR DADOS DO CARLOS DO FIREBASE
+  // CARREGAR DADOS DO CARLOS
   db.collection("users").doc("carlos").get().then((doc) => {
     if (doc.exists) {
       const data = doc.data();
-      chips = data.chips || 100;
+      chips = data.chips || 0;
       mult = data.mult || 1;
       workoutSkips = data.workoutSkips ?? 5;
       sugarSkips = data.sugarSkips ?? 0;
+      currentAnte = data.currentAnte || 1;
       updateDisplay();
     }
   }).catch(err => console.log("Load error:", err));
 
-  // LÓGICA REVERTIDA ORIGINAL: REGISTO DIÁRIO E APLICAÇÃO DO MULTIPLICADOR
   btnSubmit.onclick = () => {
-    // Se cumpriu o dia Sugar Free, atribui +1 de multiplicador
     if (chkSugarFree.checked) {
-      mult = 2; 
+      mult += 1;
     } else {
-      // Se falhou o açúcar mas não tem proteção, o multiplicador desce para 0
-      mult = 0; 
+      mult = 1; 
     }
 
-    // Ganho de Chips pelo Treino
     if (chkWorkout.checked) {
       chips += 100;
     }
@@ -300,6 +301,7 @@
     displayMult.innerText = mult + "x";
     document.getElementById('val-w-skips').innerText = workoutSkips;
     document.getElementById('val-s-skips').innerText = sugarSkips;
+    document.getElementById('val-ante').innerText = "Ante " + currentAnte + " / 16";
   }
 
   function saveData() {
@@ -308,6 +310,7 @@
       mult: mult,
       workoutSkips: workoutSkips,
       sugarSkips: sugarSkips,
+      currentAnte: currentAnte,
       lastUpdated: new Date()
     }, { merge: true });
   }
