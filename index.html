@@ -372,7 +372,7 @@
         <li><b>Workouts:</b> Gym / Home workouts grant <b>100 Base Chips</b>. Workout Skip grants 25 Chips. Violations give 0 Chips. You have <b>5 Workout Skips total</b> for the entire campaign (non-renewable).</li>
         <li><b>Sugar Control:</b> Sugar Free days add <b>+1 Multiplier</b>. Sugar Skip maintains your Mult. Sugar Violations <b>reset Multiplier to 0</b>.</li>
         <li><b>Ante Goals & Rewards:</b> Each Ante lasts 7 Rounds. Clear an Ante target to reach the next Ante and gain <b>+1 Sugar Skip</b>!</li>
-        <li><b>Perks:</b> Select 1 active Perk per round for bonuses. Unselected Perks rotate automatically after each round.</li>
+        <li><b>Jokers:</b> Select 1 active Joker per round for bonuses. Unselected Jokers rotate automatically after each round.</li>
       </ul>
     </div>
 
@@ -421,9 +421,9 @@
     </div>
   </div>
 
-  <!-- PERKS SELECTOR -->
+  <!-- JOKERS SELECTOR -->
   <div class="card">
-    <div class="section-title">Active Perks</div>
+    <div class="section-title">Jokers</div>
     <div class="joker-grid" id="joker-container">
       <!-- Generated via JS -->
     </div>
@@ -747,7 +747,7 @@
       let newJoker = availablePool[Math.floor(Math.random() * availablePool.length)];
       let oldJokerName = state.equippedJokers[targetSlot].name;
       state.equippedJokers[targetSlot] = newJoker;
-      alert(`🔄 PERK ROTATION:\n"${oldJokerName}" was replaced by "${newJoker.name}"!`);
+      alert(`🔄 JOKER ROTATION:\n"${oldJokerName}" was replaced by "${newJoker.name}"!`);
     }
   }
 
