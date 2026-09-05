@@ -1,25 +1,22 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Ana Gym Quest - Painel de Carga e Pontos 🏋️‍♀️</title>
+  <title>No Sugar 'Til Xmas Challenge</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0c081e;
-      --card: #181232;
-      --card-border: #3b2b6e;
-      --pink: #ff2a85;
-      --yellow: #ffd700;
-      --green: #00ffcc;
-      --purple: #9b51e0;
-      --blue: #00bfff;
-      --red: #ff4757;
+      --bg: #090d16;
+      --card: #111827;
+      --card-border: #1f293d;
+      --green: #10b981;
+      --blue: #3b82f6;
+      --red: #ef4444;
       --white: #ffffff;
-      --muted: #938cb5;
+      --muted: #6b7280;
     }
 
     * { box-sizing: border-box; }
@@ -30,12 +27,8 @@
       color: var(--white); 
       margin: 0; 
       padding: 12px;
-      background-image: 
-        radial-gradient(var(--purple) 1.5px, transparent 1.5px),
-        radial-gradient(var(--pink) 1.5px, transparent 1.5px);
-      background-size: 32px 32px;
-      background-position: 0 0, 16px 16px;
-      background-color: var(--bg);
+      background-image: radial-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 0);
+      background-size: 20px 20px;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -49,62 +42,48 @@
     
     .card { 
       background: var(--card); 
-      border: 3px solid var(--purple); 
-      border-radius: 16px; 
-      padding: 16px; 
-      box-shadow: 0 8px 25px rgba(155, 81, 224, 0.3); 
-    }
-
-    .card-reward {
-      border: 3px solid var(--yellow);
-      background: linear-gradient(135deg, #181232 0%, #341f47 100%);
-      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+      border: 1.5px solid var(--card-border); 
+      border-radius: 8px; 
+      padding: 12px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
     }
 
     .main-title {
       font-family: 'Press Start 2P', monospace;
       text-align: center;
-      font-size: 0.8rem;
-      color: var(--yellow);
+      font-size: 0.75rem;
+      color: var(--blue);
       margin-bottom: 6px;
       text-transform: uppercase;
-      line-height: 1.4;
-      text-shadow: 2px 2px var(--pink);
-    }
-
-    .subtitle-fun {
-      text-align: center;
-      font-size: 0.9rem;
-      color: var(--green);
-      font-weight: 700;
-      margin-bottom: 10px;
+      line-height: 1.2;
     }
 
     .header { 
       font-family: 'Press Start 2P', monospace;
       text-align: center; 
-      font-size: 0.85rem; 
-      color: var(--blue); 
+      font-size: 0.9rem; 
+      color: var(--green); 
     }
 
+    /* Rules Collapsible Section */
     .rules-toggle {
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.55rem;
-      color: var(--yellow);
+      font-size: 0.6rem;
+      color: var(--blue);
       text-align: center;
-      padding: 8px;
-      background: rgba(255, 215, 0, 0.1);
-      border: 2px dashed var(--yellow);
-      border-radius: 8px;
+      padding: 6px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px dashed var(--blue);
+      border-radius: 6px;
       cursor: pointer;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       user-select: none;
     }
 
     .rules-content {
       display: none;
-      font-size: 0.85rem;
-      color: #f3e8ff;
+      font-size: 0.8rem;
+      color: #d1d5db;
       line-height: 1.4;
       margin-top: 8px;
       padding-top: 8px;
@@ -117,162 +96,71 @@
     }
 
     .rules-content li {
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
-    .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
     
     .stat-box { 
       background: rgba(0, 0, 0, 0.4); 
-      border: 2px solid var(--card-border);
-      padding: 10px 6px; 
-      border-radius: 10px; 
+      border: 1px solid var(--card-border);
+      padding: 8px 4px; 
+      border-radius: 6px; 
       text-align: center; 
     }
     
     .stat-val { 
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.9rem; 
+      font-size: 1rem; 
       color: var(--white);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
-    .stat-lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
-
-    /* Grelha Semanal Detalhada */
-    .week-days-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-      margin-top: 10px;
-    }
-
-    .day-cell {
-      background: rgba(0, 0, 0, 0.5);
-      border: 2px solid var(--card-border);
-      border-radius: 8px;
-      padding: 6px 2px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 75px;
-    }
-
-    .day-cell.today {
-      border-color: var(--yellow);
-      background: rgba(255, 215, 0, 0.1);
-    }
-
-    .day-cell-name {
-      font-size: 0.55rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .day-cell.today .day-cell-name {
-      color: var(--yellow);
-    }
-
-    .day-cell-status {
-      font-size: 0.8rem;
-    }
-
-    .day-cell-meta {
-      font-size: 0.55rem;
-      color: var(--green);
-      font-weight: bold;
-    }
-
-    /* Gráfico de Barras de Carga */
-    .chart-container {
-      background: rgba(0, 0, 0, 0.4);
-      border: 2px solid var(--card-border);
-      border-radius: 12px;
-      padding: 12px;
-      margin-top: 12px;
-    }
-
-    .chart-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.55rem;
-      color: var(--blue);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    .bars-wrapper {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-      align-items: flex-end;
-      height: 90px;
-      padding-top: 10px;
-      border-bottom: 2px solid var(--card-border);
-      padding-bottom: 4px;
-    }
-
-    .bar-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100%;
-      justify-content: flex-end;
-    }
-
-    .bar-fill {
-      width: 14px;
-      background: linear-gradient(180deg, var(--green), var(--purple));
-      border-radius: 4px 4px 0 0;
-      transition: height 0.4s ease;
-      min-height: 2px;
-    }
-
-    .bar-label {
-      font-size: 0.5rem;
-      color: var(--muted);
-      margin-top: 4px;
-      text-transform: uppercase;
-    }
+    .stat-lbl { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
 
     .progress-bg { 
-      background: rgba(0, 0, 0, 0.6); 
-      border: 2px solid var(--card-border);
-      border-radius: 8px; 
-      height: 16px; 
+      background: rgba(0, 0, 0, 0.5); 
+      border: 1px solid var(--card-border);
+      border-radius: 4px; 
+      height: 12px; 
       overflow: hidden; 
-      margin-top: 10px; 
-      padding: 2px;
+      margin-top: 4px; 
+      padding: 1px;
     }
     
     .progress-fill { 
-      background: linear-gradient(90deg, var(--purple), var(--green)); 
+      background: var(--green); 
       height: 100%; 
       width: 0%; 
-      border-radius: 5px;
+      border-radius: 2px;
+      transition: width 0.4s ease; 
+    }
+    
+    .progress-fill-global { 
+      background: var(--blue); 
+      height: 100%; 
+      width: 0%; 
+      border-radius: 2px;
       transition: width 0.4s ease; 
     }
 
     .btn-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 8px;
+      gap: 8px;
+      margin-top: 6px;
     }
 
     .btn { 
       font-family: 'Rajdhani', sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       background: rgba(255, 255, 255, 0.03); 
       color: var(--white); 
-      border: 2px solid var(--card-border); 
-      padding: 10px 6px; 
-      border-radius: 10px; 
+      border: 1px solid var(--card-border); 
+      padding: 8px 6px; 
+      border-radius: 6px; 
       font-weight: 700; 
       cursor: pointer; 
       width: 100%; 
@@ -282,109 +170,120 @@
       justify-content: center;
       text-align: center;
       line-height: 1.2;
-      min-height: 60px;
+      min-height: 54px;
       transition: all 0.2s;
       opacity: 0.4;
     }
 
     .btn.active {
       opacity: 1 !important;
-      transform: scale(1.03);
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
     }
     
-    .btn:hover:not(:disabled) { opacity: 0.9; }
+    .btn:hover:not(:disabled), .btn:active:not(:disabled) { 
+      opacity: 0.9;
+    }
+    .btn:disabled { opacity: 0.25; cursor: not-allowed; }
     
     .btn-green { border-color: var(--green); color: var(--green); }
+    .btn-blue { border-color: var(--blue); color: var(--blue); }
+    
     .btn-red { 
-      border-color: var(--red) !important; 
+      border: 1.5px solid var(--red) !important; 
       color: var(--red) !important; 
-      background: rgba(255, 71, 87, 0.1) !important;
-    }
-
-    .input-group {
-      margin-top: 10px;
-    }
-
-    .input-group label {
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .input-group input {
-      width: 100%;
-      background: rgba(0,0,0,0.5);
-      border: 2px solid var(--card-border);
-      border-radius: 8px;
-      padding: 8px 12px;
-      color: var(--white);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 1rem;
-      font-weight: bold;
+      background: rgba(239, 68, 68, 0.08) !important;
     }
     
     .btn-next { 
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.65rem;
-      background: linear-gradient(135deg, var(--yellow), #ff9f43); 
+      font-size: 0.7rem;
+      background: var(--green); 
       color: #000; 
       border: none;
-      margin-top: 14px; 
-      padding: 16px; 
+      margin-top: 12px; 
+      padding: 14px; 
       font-weight: bold;
-      min-height: 50px;
+      min-height: 48px;
       width: 100%;
-      border-radius: 10px;
+      border-radius: 6px;
       cursor: pointer;
       opacity: 1;
-      box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
-      transition: transform 0.1s;
     }
-
-    .btn-next:active { transform: scale(0.97); }
     
     .section-title { 
       font-family: 'Press Start 2P', monospace;
       font-size: 0.6rem; 
       color: var(--green); 
-      margin-bottom: 8px; 
+      margin-bottom: 6px; 
       text-transform: uppercase; 
     }
     
     .status-badge { 
       font-family: 'Press Start 2P', monospace;
       font-size: 0.6rem; 
-      padding: 6px 10px; 
-      border-radius: 6px; 
-      background: rgba(0, 255, 204, 0.15); 
-      border: 2px solid var(--green);
-      color: var(--green);
+      padding: 3px 6px; 
+      border-radius: 3px; 
+      background: rgba(59, 130, 246, 0.1); 
+      border: 1px solid var(--blue);
+      color: var(--blue);
       display: inline-block; 
+    }
+    
+    .joker-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 6px; }
+    
+    .joker-card { 
+      border: 1px solid var(--card-border); 
+      background: rgba(0,0,0,0.3); 
+      padding: 8px 6px; 
+      border-radius: 6px; 
+      font-size: 0.75rem; 
+      cursor: pointer; 
+      text-align: center; 
+      transition: all 0.2s;
+      color: var(--white);
+      line-height: 1.2;
+    }
+    
+    .joker-card.selected { 
+      border-color: var(--blue); 
+      background: rgba(59, 130, 246, 0.15); 
+    }
+    
+    .timer-box { 
+      font-family: 'Press Start 2P', monospace;
+      text-align: center; 
+      font-size: 0.6rem; 
+      color: var(--blue); 
+      margin-top: 10px; 
     }
 
     .reset-link {
       text-align: center;
-      margin-top: 12px;
-      font-size: 0.75rem;
+      margin-top: 10px;
+      font-size: 0.7rem;
       color: var(--muted);
       cursor: pointer;
       text-decoration: underline;
       padding: 4px;
     }
 
+    .sync-status {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.55rem;
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
     .date-picker-box {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(0,0,0,0.5);
-      border: 2px solid var(--card-border);
-      border-radius: 10px;
-      padding: 8px 12px;
-      margin-bottom: 12px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin-bottom: 10px;
     }
 
     .date-picker-box input {
@@ -392,17 +291,43 @@
       border: none;
       color: var(--white);
       font-family: 'Rajdhani', sans-serif;
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: bold;
       color-scheme: dark;
     }
 
+    /* DESTAQUE MELHORADO PARA O VOLUME LIFTED */
+    .volume-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(16, 185, 129, 0.08));
+      border: 2px solid var(--blue);
+      border-radius: 8px;
+      padding: 10px 12px;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+    }
+
+    .volume-box input {
+      background: rgba(0,0,0,0.7);
+      border: 1.5px solid var(--blue);
+      border-radius: 6px;
+      color: var(--white);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.85rem;
+      padding: 8px;
+      width: 100px;
+      text-align: center;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
+
     .daily-summary-panel {
-      background: rgba(0, 255, 204, 0.12);
-      border: 2px solid var(--green);
-      border-radius: 10px;
-      padding: 10px;
-      margin-top: 12px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--green);
+      border-radius: 6px;
+      padding: 8px;
+      margin-top: 10px;
       text-align: center;
       display: none;
     }
@@ -411,79 +336,22 @@
       font-family: 'Press Start 2P', monospace;
       font-size: 0.6rem;
       color: var(--green);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .daily-summary-details {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--white);
       line-height: 1.3;
     }
 
-    .reward-box-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.7rem;
-      color: var(--yellow);
+    .lock-notice {
+      color: var(--red);
+      font-size: 0.75rem;
       text-align: center;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-    }
-
-    .tiers-container {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .tier-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(0, 0, 0, 0.4);
-      border: 2px dashed var(--card-border);
-      border-radius: 10px;
-      padding: 8px 12px;
-    }
-
-    .tier-item.unlocked {
-      border-style: solid;
-      border-color: var(--green);
-      background: rgba(0, 255, 204, 0.1);
-    }
-
-    .tier-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.55rem;
-      color: var(--yellow);
-      margin-bottom: 2px;
-    }
-
-    .tier-item.unlocked .tier-title {
-      color: var(--green);
-    }
-
-    .tier-desc {
-      font-size: 0.82rem;
-      color: #ffeaa7;
-      font-weight: 700;
-    }
-
-    .tier-status {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.7rem;
-      padding: 4px 8px;
-      border-radius: 6px;
-      background: rgba(255,255,255,0.05);
-      color: var(--muted);
-      border: 1px solid var(--card-border);
-      white-space: nowrap;
-    }
-
-    .tier-item.unlocked .tier-status {
-      background: rgba(0, 255, 204, 0.2);
-      color: var(--green);
-      border-color: var(--green);
+      margin-top: 6px;
+      font-weight: bold;
+      display: none;
     }
   </style>
 </head>
@@ -491,110 +359,126 @@
 
 <div class="container">
 
-  <!-- PAINEL DE PROGRESSO & VISÃO SEMANAL -->
+  <!-- PROGRESS DASHBOARD -->
   <div class="card">
-    <div class="main-title">⚡ ANA GYM QUEST ⚡</div>
-    <div class="subtitle-fun">🛡️ Carga, Força e Consistência! 🎯💪</div>
+    <div class="main-title">🎄 No Sugar 'Til Xmas 🎄</div>
+    <div class="sync-status" id="sync-status">⚡ CONNECTING TO FIREBASE...</div>
     
-    <div class="rules-toggle" id="rules-toggle">📜 REGRAS DO JOGO 🎮 ▼</div>
+    <!-- Collapsible Challenge Rules -->
+    <div class="rules-toggle" id="rules-toggle">📜 HOW TO PLAY & RULES ▼</div>
     <div class="rules-content" id="rules-content">
       <ul>
-        <li>📅 <b>Visão Semanal:</b> Acompanha o teu desempenho de Segunda a Domingo.</li>
-        <li>🏋️ <b>Carga & Pontos:</b> Regista o peso total levantado e os pontos ganhos em cada sessão de treino.</li>
-        <li>🏆 <b>Objetivos:</b> Mínimo de 2 treinos por semana para desbloquear os prémios principais! ✨</li>
+        <li><b>Daily Scoring:</b> Daily Chips = Base Chips × Active Multiplier.</li>
+        <li><b>Workouts:</b> Gym / Home workouts grant <b>100 Base Chips</b>. Workout Skip grants 25 Chips. Violations give 0 Chips. You have <b>5 Workout Skips total</b> for the entire campaign (non-renewable).</li>
+        <li><b>Sugar Control:</b> Sugar Free days add <b>+1 Multiplier</b>. Sugar Skip maintains your Mult. Sugar Violations <b>reset Multiplier to 0</b>.</li>
+        <li><b>Ante Goals & Rewards:</b> Each Ante lasts 7 Rounds. Clear an Ante target to reach the next Ante and gain <b>+1 Sugar Skip</b>!</li>
+        <li><b>Jokers:</b> Select 1 active Joker per round for bonuses. Unselected Jokers rotate automatically after each round.</li>
       </ul>
     </div>
 
-    <div class="header" id="week-title" style="margin-top: 8px;">SEMANA 1</div>
-    <div style="text-align: center; margin-top: 6px;">
-      <span class="status-badge" id="goal-tracker">🏆 TREINOS: 0 / 2 (MÍNIMO)</span>
-    </div>
-
-    <div style="margin-top: 12px;">
-      <div style="font-size: 0.65rem; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; color: var(--pink);">🗓️ VISÃO DA SEMANA (SEG → DOM):</div>
-      <div class="week-days-grid" id="week-days-grid"></div>
-    </div>
-
-    <!-- GRÁFICO DE CARGA SEMANAL -->
-    <div class="chart-container">
-      <div class="chart-title">📊 Gráfico de Carga Levantada (kg)</div>
-      <div class="bars-wrapper" id="bars-wrapper">
-        <!-- Preenchido via JS -->
-      </div>
+    <div class="header" id="ante-title" style="margin-top: 8px;">ANTE 1 / 16</div>
+    <div style="text-align: center; margin-top: 4px;">
+      <span class="status-badge" id="round-tracker">ROUND 1 OF 7</span>
     </div>
     
+    <!-- Daily Summary Panel -->
     <div class="daily-summary-panel" id="daily-summary-panel">
-      <div class="daily-summary-title" id="summary-date-title">📌 REGISTO DO DIA</div>
+      <div class="daily-summary-title" id="summary-date-title">DAILY SUMMARY</div>
       <div class="daily-summary-details" id="summary-details">---</div>
     </div>
 
     <div class="stat-grid">
       <div class="stat-box">
-        <div class="stat-val" id="total-treinos" style="color: var(--green);">0</div>
-        <div class="stat-lbl">🏋️ Treinos Feitos</div>
+        <div class="stat-val" id="current-mult" style="color: var(--green);">+0</div>
+        <div class="stat-lbl">Active Mult</div>
       </div>
       <div class="stat-box">
-        <div class="stat-val" id="total-carga" style="color: var(--blue);">0 kg</div>
-        <div class="stat-lbl">⚖️ Carga Total Semana</div>
+        <div class="stat-val" id="skips-display" style="font-size: 0.85rem; margin-top: 2px;">🏋️5 | 🍬1</div>
+        <div class="stat-lbl">Skips Left</div>
       </div>
     </div>
 
-    <div style="margin-top: 12px;">
+    <!-- Ante Progress -->
+    <div style="margin-top: 10px;">
       <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700;">
-        <span>📈 PROGRESSO DA META MÍNIMA</span>
-        <span id="progress-text" style="color: var(--yellow);">0%</span>
+        <span>ANTE CHIPS</span>
+        <span id="ante-progress-text" style="color: var(--green);">0 / 2,800</span>
       </div>
       <div class="progress-bg">
-        <div class="progress-fill" id="progress-bar"></div>
+        <div class="progress-fill" id="ante-progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- Global Progress -->
+    <div style="margin-top: 8px;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700;">
+        <span>TOTAL CAMPAIGN</span>
+        <span id="global-progress-text" style="color: var(--blue);">0%</span>
+      </div>
+      <div class="progress-bg">
+        <div class="progress-fill-global" id="global-progress-bar"></div>
       </div>
     </div>
   </div>
 
-  <!-- CAIXA DE PRÉMIOS -->
-  <div class="card card-reward">
-    <div class="reward-box-title">🎁 MESA DOS PRÉMIOS & TESOUROS 🏆</div>
-    <div style="font-size: 0.75rem; color: #ffeaa7; margin-bottom: 10px; text-align: center;">Bate recordes de carga e desbloqueia recompensas épicas! ✨</div>
-    
-    <div class="tiers-container" id="tiers-container">
-      <!-- Preenchido via JavaScript -->
+  <!-- JOKERS SELECTOR -->
+  <div class="card">
+    <div class="section-title">Jokers</div>
+    <div class="joker-grid" id="joker-container">
+      <!-- Generated via JS -->
     </div>
   </div>
 
-  <!-- REGISTO DIÁRIO -->
+  <!-- DAILY LOGS -->
   <div class="card">
-    <div class="section-title">📅 REGISTAR DIA</div>
+    <div class="section-title">Log Date</div>
     <div class="date-picker-box">
-      <span style="font-size: 0.85rem; font-weight: 700;">📆 DATA:</span>
+      <span style="font-size: 0.8rem; font-weight: 700;">📅 DATE:</span>
       <input type="date" id="log-date-picker" min="2026-09-01">
     </div>
+    
+    <div class="lock-notice" id="lock-notice">⚠️ YOU MUST LOG THE PREVIOUS DAY FIRST!</div>
 
     <div id="log-controls-container">
-      <div class="section-title">🎧 O QUE FIZESTE HOJE?</div>
+      <div class="section-title">1. Workout Log</div>
       <div class="btn-grid">
-        <button class="btn btn-green active" id="btn-t-gym"><span>🏋️‍♂️ TREINO FEITO</span><span style="font-size: 0.65rem; color: var(--muted);">(Com energia ao rubro!) 🔥</span></button>
-        <button class="btn btn-red" id="btn-t-skip"><span>🍿 DESCANSO / FALTA</span><span style="font-size: 0.65rem; color: #ff9999;">(A recuperar 🔋)</span></button>
+        <button class="btn btn-green active" id="btn-w-gym"><span>🏋️ Gym + Pushups</span><span style="font-size: 0.7rem; color: var(--muted);">(100 Chips)</span></button>
+        <button class="btn btn-green" id="btn-w-home"><span>🏠 Home + Pushups</span><span style="font-size: 0.7rem; color: var(--muted);">(100 Chips)</span></button>
+        <button class="btn btn-blue" id="btn-w-skip"><span>🛡️ Workout Skip</span><span id="skip-chip-val" style="font-size: 0.7rem; color: var(--muted);">(25 Chips)</span></button>
+        <button class="btn btn-red" id="btn-w-viol"><span>⚠️ Violation</span><span style="font-size: 0.7rem; color: #fca5a5;">(0 Chips)</span></button>
       </div>
 
-      <div id="gym-details-inputs" style="margin-top: 12px;">
-        <div class="input-group">
-          <label>⚖️ Peso Total Levantado (kg):</label>
-          <input type="number" id="input-carga" placeholder="Ex: 1250" value="0" min="0">
+      <!-- Volume Input com Destaque -->
+      <div class="volume-box">
+        <div>
+          <span style="font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: var(--blue); display: block; margin-bottom: 2px;">🏋️ VOLUME LIFTED</span>
+          <span style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">Total weight lifted today</span>
         </div>
-        <div class="input-group" style="margin-top: 8px;">
-          <label>⭐ Pontos de Conquista:</label>
-          <input type="number" id="input-pontos" placeholder="Ex: 100" value="50" min="0">
+        <div>
+          <input type="number" id="workout-volume" placeholder="0" min="0" step="0.5">
+          <span style="font-size: 0.7rem; color: var(--white); font-weight: bold; margin-left: 2px;">KG</span>
         </div>
       </div>
 
-      <button class="btn btn-next" id="btn-calculate">🔥 GUARDAR O REGISTO! 🚀</button>
+      <div style="margin-top: 10px; border-top: 1px dashed var(--card-border); padding-top: 8px;">
+        <div class="section-title">2. Sugar Log</div>
+        <div class="btn-grid">
+          <button class="btn btn-green active" id="btn-s-clean"><span>✅ Sugar Free</span><span style="font-size: 0.7rem; color: var(--muted);">(+1 Mult)</span></button>
+          <button class="btn btn-blue" id="btn-s-skip"><span>🍬 Sugar Skip</span><span style="font-size: 0.7rem; color: var(--muted);">(Keep Mult)</span></button>
+          <button class="btn btn-red" id="btn-s-viol" style="grid-column: span 2;"><span>⚠️ Sugar Violation</span><span style="font-size: 0.7rem; color: #fca5a5;">(Reset Mult to 0)</span></button>
+        </div>
+      </div>
+
+      <button class="btn btn-next" id="btn-calculate">END ROUND</button>
     </div>
 
-    <div class="reset-link" id="btn-reset-game">🔄 REPOR JOGO DO ZERO ⚠️</div>
+    <div class="timer-box" id="midnight-timer"></div>
+    <div class="reset-link" id="btn-reset-game">Reset Campaign Data</div>
   </div>
 
 </div>
 
-<!-- LÓGICA E FIREBASE -->
+<!-- FIREBASE & CORE LOGIC -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -612,29 +496,50 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const DOC_ID = "ana_gym_quest_data_v2";
+  const DOC_ID = "sara_challenge_data";
   const docRef = doc(db, "challenges", DOC_ID);
 
+  const jokerPool = [
+    { id: 'double_down', name: '⚡ Double Down', desc: '+50% Chips on clean rounds.' },
+    { id: 'iron_will', name: '⚡ Iron Will', desc: 'Workout Skip gives 50 Chips.' },
+    { id: 'sweet_saver', name: '⚡ Sweet Saver', desc: 'Sugar Skip adds +1 Mult.' },
+    { id: 'overdrive', name: '⚡ Overdrive', desc: 'Workouts yield 125 Chips.' },
+    { id: 'chip_boost', name: '⚡ Chip Booster', desc: 'Base workouts give +20 extra Chips.' },
+    { id: 'sugar_rush', name: '⚡ Sugar Rush', desc: 'Sugar Free gives +2 Mult instead of +1.' },
+    { id: 'skip_master', name: '⚡ Skip Master', desc: 'Skips give +1 Mult when used.' },
+    { id: 'heavy_lifter', name: '⚡ Heavy Lifter', desc: '+1 Base Chip per 100 kg lifted.' },
+    { id: 'daily_streak', name: '⚡ Daily Streak', desc: '+5 Chips per current active Mult.' },
+    { id: 'weekend_warrior', name: '⚡ Weekend Warrior', desc: 'Sat/Sun workouts yield +40 extra Chips.' },
+    { id: 'sugar_cleanse', name: '⚡ Sugar Cleanse', desc: 'If Mult is 0, Sugar Free gives +3 Mult.' },
+    { id: 'phoenix_feather', name: '⚡ Phoenix Feather', desc: 'Sugar Violation keeps 50% Mult instead of 0.' },
+    { id: 'iron_grip', name: '⚡ Iron Grip', desc: 'Lifting >3,000 kg adds +1 bonus Mult.' },
+    { id: 'glass_cannon', name: '⚡ Glass Cannon', desc: '+100 Base Chips, but Sugar Violation wipes Sugar Skips.' },
+    { id: 'last_stand', name: '⚡ Last Stand', desc: 'If 0 Skips left, clean workouts give +50% Chips.' },
+    { id: 'rest_day', name: '⚡ Rest Day Insurance', desc: 'Workout Skip keeps active Mult intact.' },
+    { id: 'santas_favor', name: '⚡ Santa Favor', desc: '+10 extra Chips per completed Ante.' },
+    { id: 'mult_doubler', name: '⚡ Mult Doubler', desc: 'If Mult > 5, Sugar Free grants +2 Mult.' },
+    { id: 'combo_breaker', name: '⚡ Combo Breaker', desc: '3 consecutive clean days grants +1 Sugar Skip.' },
+    { id: 'end_game', name: '⚡ End Game', desc: 'Rounds 6 & 7 of any Ante yield 1.25x Chips.' }
+  ];
+
   const defaultState = {
-    totalTreinos: 0,
+    ante: 1,
+    roundInAnte: 1,
+    multiplier: 0,
+    workoutSkips: 5,
+    sugarSkips: 1,
+    anteChips: 0,
+    totalChips: 0,
+    cleanStreak: 0,
+    activeJokerSlot: 0,
+    equippedJokers: [jokerPool[0], jokerPool[1], jokerPool[2], jokerPool[3]],
     dailyLogs: {},
-    pendingStatus: 'gym'
+    pendingWorkout: 'gym',
+    pendingSugar: 'clean'
   };
 
   let state = { ...defaultState };
-
-  const foodRewards = {
-    1: "🍔 Hambúrguer artesanal gourmet com batatas fritas 🍟",
-    2: "🍕 Pizza napolitana gigante com ingredientes extra 🧀",
-    3: "🍣 Jantar de sushi livre e repasto completo 🥢",
-    4: "🥞 Crepe doce gigante com chocolate e gelado 🍫"
-  };
-
-  const extraRewardsList = [
-    { treino: 3, titulo: "🍦 3º Treino (Bónus Especial)", desc: "Um gelado artesanal duplo 🍨" },
-    { treino: 4, titulo: "🍫 4º Treino (Bónus Especial)", desc: "Um snack doce crocante e delicioso 🍪" },
-    { treino: 5, titulo: "☕ 5º Treino (Bónus Especial)", desc: "Um café gourmet com pastel de nata 🥐" }
-  ];
+  const anteTargets = [2800, 7700, 12600, 17500];
 
   function formatDateLocal(d) {
     let year = d.getFullYear();
@@ -647,138 +552,15 @@
     return date.toLocaleDateString('en-CA', { timeZone: 'Europe/Lisbon' });
   }
 
-  function getMondayOfDate(d) {
-    let date = new Date(d);
-    let day = date.getDay();
-    let diff = date.getDate() - day + (day === 0 ? -6 : 1);
-    return new Date(date.setDate(diff));
-  }
-
-  function getWeekNumberForDate(dateStr) {
-    let d = new Date(dateStr);
-    let firstWeekStart = new Date(2026, 7, 31);
-    let mondayOfGiven = getMondayOfDate(d);
-    
-    let diffTime = mondayOfGiven - firstWeekStart;
-    let diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-    let weekNum = Math.floor(diffDays / 7) + 1;
-    return Math.max(1, weekNum);
-  }
-
-  function getWeekLogs(selectedDateStr) {
-    let selectedDate = new Date(selectedDateStr);
-    let monday = getMondayOfDate(selectedDate);
-    let weekData = [];
-    let totalCargaSemana = 0;
-    let treinosSemana = 0;
-
-    for (let i = 0; i < 7; i++) {
-      let d = new Date(monday);
-      d.setDate(d.getDate() + i);
-      let dateStr = formatDateLocal(d);
-      let log = state.dailyLogs && state.dailyLogs[dateStr];
-      if (log && log.status === 'gym') {
-        totalCargaSemana += (log.carga || 0);
-        treinosSemana++;
+  function getNextSequentialDate() {
+    let baseDate = new Date(2026, 8, 1);
+    while (true) {
+      let dateStr = formatDateLocal(baseDate);
+      if (!state.dailyLogs || !state.dailyLogs[dateStr]) {
+        return dateStr;
       }
-      weekData.push({ dateStr, log });
+      baseDate.setDate(baseDate.getDate() + 1);
     }
-    return { weekData, totalCargaSemana, treinosSemana };
-  }
-
-  function renderWeekGridAndChart(selectedDateStr) {
-    const gridEl = document.getElementById('week-days-grid');
-    const barsWrapper = document.getElementById('bars-wrapper');
-    gridEl.innerHTML = '';
-    barsWrapper.innerHTML = '';
-
-    let { weekData } = getWeekLogs(selectedDateStr);
-    let todayStr = getPTDateString();
-    const shortDays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-
-    // Encontrar carga máxima na semana para escalar o gráfico proporcionalmente
-    let maxCarga = 100;
-    weekData.forEach(item => {
-      if (item.log && item.log.carga > maxCarga) {
-        maxCarga = item.log.carga;
-      }
-    });
-
-    weekData.forEach((item, i) => {
-      let dayName = shortDays[i];
-      let cell = document.createElement('div');
-      cell.className = 'day-cell';
-      if (item.dateStr === todayStr) {
-        cell.classList.add('today');
-      }
-      
-      let statusIcon = '·';
-      let metaText = '';
-      if (item.log) {
-        if (item.log.status === 'gym') {
-          statusIcon = '🏋️‍♂️';
-          metaText = `${item.log.carga}kg`;
-        } else {
-          statusIcon = '🍿';
-          metaText = 'Descanso';
-        }
-      }
-
-      cell.innerHTML = `
-        <div class="day-cell-name">${dayName}</div>
-        <div class="day-cell-status">${statusIcon}</div>
-        <div class="day-cell-meta">${metaText}</div>
-      `;
-      gridEl.appendChild(cell);
-
-      // Criar barra do gráfico
-      let cargaDia = (item.log && item.log.status === 'gym') ? (item.log.carga || 0) : 0;
-      let barHeightPct = maxCarga > 0 ? Math.round((cargaDia / maxCarga) * 100) : 0;
-
-      let barCol = document.createElement('div');
-      barCol.className = 'bar-col';
-      barCol.innerHTML = `
-        <div style="font-size: 0.45rem; color: var(--yellow); margin-bottom: 2px;">${cargaDia > 0 ? cargaDia : ''}</div>
-        <div class="bar-fill" style="height: ${barHeightPct}%;"></div>
-        <div class="bar-label">${dayName}</div>
-      `;
-      barsWrapper.appendChild(barCol);
-    });
-  }
-
-  function renderTiers(treinosNaSemana, currentWeekNum) {
-    const container = document.getElementById('tiers-container');
-    container.innerHTML = '';
-
-    let baseUnlocked = treinosNaSemana >= 2;
-    let baseFoodDesc = baseUnlocked ? (foodRewards[currentWeekNum] || "🏆 Banquete gastronómico especial! 🍷") : "🔒 Prémio Mínimo Misterioso (Atinge 2 treinos esta semana! 🎯)";
-    
-    let baseDiv = document.createElement('div');
-    baseDiv.className = `tier-item ${baseUnlocked ? 'unlocked' : ''}`;
-    baseDiv.innerHTML = `
-      <div class="tier-info">
-        <div class="tier-title">🎯 Meta Mínima (2 Treinos)</div>
-        <div class="tier-desc">${baseFoodDesc}</div>
-      </div>
-      <div class="tier-status">${baseUnlocked ? '🔥 CONQUISTADO!' : `${treinosNaSemana}/2 Treinos`}</div>
-    `;
-    container.appendChild(baseDiv);
-
-    extraRewardsList.forEach(item => {
-      let isUnlocked = treinosNaSemana >= item.treino;
-      if (isUnlocked) {
-        let div = document.createElement('div');
-        div.className = 'tier-item unlocked';
-        div.innerHTML = `
-          <div class="tier-info">
-            <div class="tier-title">${item.titulo}</div>
-            <div class="tier-desc">${item.desc}</div>
-          </div>
-          <div class="tier-status">✨ CONQUISTADO!</div>
-        `;
-        container.appendChild(div);
-      }
-    });
   }
 
   async function loadStateFromFirebase() {
@@ -786,20 +568,26 @@
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         state = { ...defaultState, ...docSnap.data() };
+        if (state.workoutSkips === undefined) state.workoutSkips = 5;
+        if (state.cleanStreak === undefined) state.cleanStreak = 0;
       } else {
         await saveStateToFirebase();
       }
+      document.getElementById('sync-status').innerText = "☁️ CLOUD SYNCED";
+      document.getElementById('sync-status').style.color = "var(--green)";
     } catch (e) {
-      console.error("Erro de ligação ao Firebase:", e);
+      console.error("Firebase connection error:", e);
+      document.getElementById('sync-status').innerText = "⚠️ CONNECTION ERROR (OFFLINE MODE)";
+      document.getElementById('sync-status').style.color = "#f59e0b";
     }
 
     const datePicker = document.getElementById('log-date-picker');
     let today = getPTDateString();
     datePicker.min = "2026-09-01";
     datePicker.max = today;
-    if (!datePicker.value) {
-      datePicker.value = today;
-    }
+
+    let nextAllowed = getNextSequentialDate();
+    datePicker.value = (nextAllowed <= today) ? nextAllowed : today;
 
     resetSelectionToDefaults();
     updateUI();
@@ -807,113 +595,303 @@
 
   async function saveStateToFirebase() {
     try {
+      document.getElementById('sync-status').innerText = "⏳ SAVING...";
       await setDoc(docRef, state);
+      document.getElementById('sync-status').innerText = "☁️ CLOUD SYNCED";
+      document.getElementById('sync-status').style.color = "var(--green)";
     } catch (e) {
-      console.error("Erro ao guardar no Firebase:", e);
+      console.error("Firebase save error:", e);
+      document.getElementById('sync-status').innerText = "⚠️ ERROR SAVING DATA";
+      document.getElementById('sync-status').style.color = "var(--red)";
     }
+  }
+
+  function renderJokers() {
+    const container = document.getElementById('joker-container');
+    container.innerHTML = '';
+    state.equippedJokers.forEach((joker, idx) => {
+      const isSelected = idx === state.activeJokerSlot;
+      const card = document.createElement('div');
+      card.className = `joker-card ${isSelected ? 'selected' : ''}`;
+      card.innerHTML = `<b style="color: var(--blue);">${joker.name}</b><br>${joker.desc}`;
+      card.onclick = () => selectJoker(idx);
+      container.appendChild(card);
+    });
   }
 
   function resetSelectionToDefaults() {
-    state.pendingStatus = 'gym';
-    ['btn-t-gym', 'btn-t-skip'].forEach(id => document.getElementById(id).classList.remove('active'));
-    document.getElementById('btn-t-gym').classList.add('active');
-    document.getElementById('gym-details-inputs').style.display = 'block';
+    state.pendingWorkout = 'gym';
+    state.pendingSugar = 'clean';
+    
+    ['btn-w-gym', 'btn-w-home', 'btn-w-skip', 'btn-w-viol'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
+    ['btn-s-clean', 'btn-s-skip', 'btn-s-viol'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
+
+    document.getElementById('btn-w-gym').classList.add('active');
+    document.getElementById('btn-s-clean').classList.add('active');
   }
 
   function updateUI() {
-    let selectedDateStr = document.getElementById('log-date-picker').value;
-    let currentWeekNum = getWeekNumberForDate(selectedDateStr);
-    let { treinosSemana, totalCargaSemana } = getWeekLogs(selectedDateStr);
+    document.getElementById('ante-title').innerText = `ANTE ${state.ante} / 16`;
+    document.getElementById('round-tracker').innerText = `ROUND ${state.roundInAnte} OF 7`;
+    document.getElementById('current-mult').innerText = `+${state.multiplier}`;
+    document.getElementById('skips-display').innerText = `🏋️ ${state.workoutSkips} | 🍬 ${state.sugarSkips}`;
+    
+    let activeJoker = state.equippedJokers[state.activeJokerSlot];
+    let skipValue = (activeJoker && activeJoker.id === 'iron_will') ? '50 Chips' : '25 Chips';
+    document.getElementById('skip-chip-val').innerText = `(${skipValue})`;
 
-    document.getElementById('week-title').innerText = `SEMANA ${currentWeekNum}`;
-    document.getElementById('goal-tracker').innerText = `🏆 TREINOS: ${treinosSemana} / 2 (MÍNIMO)`;
-    document.getElementById('total-treinos').innerText = treinosSemana;
-    document.getElementById('total-carga').innerText = `${totalCargaSemana} kg`;
+    let target = anteTargets[state.ante - 1] || (4900 * state.ante - 2100);
+    document.getElementById('ante-progress-text').innerText = `${state.anteChips.toLocaleString()} / ${target.toLocaleString()}`;
+    let antePct = Math.min(100, Math.round((state.anteChips / target) * 100));
+    document.getElementById('ante-progress-bar').style.width = `${antePct}%`;
 
-    renderTiers(treinosSemana, currentWeekNum);
+    let totalGameTarget = 0;
+    for(let i = 1; i <= 16; i++) totalGameTarget += (anteTargets[i-1] || (4900 * i - 2100));
+    let globalPct = Math.min(100, Math.round((state.totalChips / totalGameTarget) * 100));
+    document.getElementById('global-progress-text').innerText = `${globalPct}% (${state.totalChips.toLocaleString()} CHIPS)`;
+    document.getElementById('global-progress-bar').style.width = `${globalPct}%`;
 
-    let pct = Math.min(100, Math.round((treinosSemana / 2) * 100));
-    document.getElementById('progress-text').innerText = `${pct}%`;
-    document.getElementById('progress-bar').style.width = `${pct}%`;
-
-    renderWeekGridAndChart(selectedDateStr);
-
+    let selectedDate = document.getElementById('log-date-picker').value;
+    let nextSequential = getNextSequentialDate();
     let summaryPanel = document.getElementById('daily-summary-panel');
+    let lockNotice = document.getElementById('lock-notice');
     let controlsContainer = document.getElementById('log-controls-container');
 
-    let isAlreadyLogged = !!(state.dailyLogs && state.dailyLogs[selectedDateStr]);
+    let isAlreadyLogged = !!(state.dailyLogs && state.dailyLogs[selectedDate]);
 
     if (isAlreadyLogged) {
-      let log = state.dailyLogs[selectedDateStr];
+      let log = state.dailyLogs[selectedDate];
       summaryPanel.style.display = 'block';
+      lockNotice.style.display = 'none';
       controlsContainer.style.display = 'none';
 
-      let statusText = log.status === 'gym' ? `🏋️‍♂️ Treino Feito (${log.carga || 0} kg | ⭐ ${log.pontos || 0} pts)` : '🍿 Descanso / Falta';
-      document.getElementById('summary-date-title').innerText = `📌 REGISTO JÁ FEITO (${selectedDateStr})`;
-      document.getElementById('summary-details').innerHTML = `<b>Estado:</b> ${statusText}<br><span style="font-size: 0.75rem; color: var(--muted);">Podes repor o jogo se precisares de corrigir. 🔄</span>`;
+      let workoutText = { 'gym': '🏋️ Gym', 'home': '🏠 Home', 'skip': '🛡️ Workout Skip', 'viol': '⚠️ Violation' }[log.workout] || log.workout;
+      let sugarText = { 'clean': '✅ Sugar Free', 'skip': '🍬 Sugar Skip', 'reset': '⚠️ Violation' }[log.sugar] || log.sugar;
+
+      document.getElementById('summary-date-title').innerText = `DAILY SUMMARY (${selectedDate})`;
+      document.getElementById('summary-details').innerHTML = `
+        <b>Workout:</b> ${workoutText} | <b>Volume:</b> ${log.volume || 0} kg<br>
+        <b>Sugar:</b> ${sugarText}<br>
+        <b>Score:</b> +${log.score || 0} Chips
+      `;
+    } else if (selectedDate > nextSequential) {
+      summaryPanel.style.display = 'none';
+      lockNotice.style.display = 'block';
+      lockNotice.innerText = `⚠️ YOU MUST LOG ${nextSequential} FIRST!`;
+      controlsContainer.style.display = 'none';
     } else {
       summaryPanel.style.display = 'none';
+      lockNotice.style.display = 'none';
       controlsContainer.style.display = 'block';
+
+      document.getElementById('btn-calculate').disabled = !(state.pendingWorkout !== null && state.pendingSugar !== null);
     }
+    
+    renderJokers();
   }
 
-  function selectStatus(status, el) {
+  async function selectJoker(slotIndex) {
+    state.activeJokerSlot = slotIndex;
+    await saveStateToFirebase();
+    updateUI();
+  }
+
+  function selectWorkout(type, el) {
     let selectedDate = document.getElementById('log-date-picker').value;
     if (state.dailyLogs && state.dailyLogs[selectedDate]) return;
 
-    state.pendingStatus = status;
-    ['btn-t-gym', 'btn-t-skip'].forEach(id => document.getElementById(id).classList.remove('active'));
-    el.classList.add('active');
-
-    let gymInputs = document.getElementById('gym-details-inputs');
-    gymInputs.style.display = (status === 'gym') ? 'block' : 'none';
-  }
-
-  async function saveLog() {
-    let selectedDateStr = document.getElementById('log-date-picker').value;
-    if (!state.dailyLogs) state.dailyLogs = {};
-    
-    if (state.dailyLogs[selectedDateStr]) {
-      alert("⚠️ Já existe um registo guardado para este dia!");
+    if (type === 'skip' && state.workoutSkips <= 0) {
+      alert("No Workout Skips left for the campaign!");
       return;
     }
-
-    let carga = 0;
-    let pontos = 0;
-
-    if (state.pendingStatus === 'gym') {
-      carga = parseFloat(document.getElementById('input-carga').value) || 0;
-      pontos = parseInt(document.getElementById('input-pontos').value) || 0;
-      state.totalTreinos++;
-    }
-
-    state.dailyLogs[selectedDateStr] = {
-      status: state.pendingStatus,
-      carga: carga,
-      pontos: pontos
-    };
-
-    let currentWeekNum = getWeekNumberForDate(selectedDateStr);
-    let { treinosSemana } = getWeekLogs(selectedDateStr);
-
-    if (treinosSemana === 2 && state.pendingStatus === 'gym') {
-      alert(`🎉 Parabéns! Atingiste o 2.º treino e desbloqueaste o prémio mínimo da Semana ${currentWeekNum}! 🏆✨`);
-    } else if (treinosSemana > 2 && state.pendingStatus === 'gym') {
-      alert(`🔥 Excelente! Treino #${treinosSemana} concluído com ${carga}kg de carga! 🚀💪`);
-    } else {
-      alert(`✅ Registo guardado para ${selectedDateStr}! Continua a dar tudo! 💪✨`);
-    }
-
-    resetSelectionToDefaults();
-    await saveStateToFirebase();
-    loadStateFromFirebase();
+    state.pendingWorkout = type;
+    
+    ['btn-w-gym', 'btn-w-home', 'btn-w-skip', 'btn-w-viol'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
+    el.classList.add('active');
+    
+    updateUI();
   }
 
+  function selectSugar(type, el) {
+    let selectedDate = document.getElementById('log-date-picker').value;
+    if (state.dailyLogs && state.dailyLogs[selectedDate]) return;
+
+    if (type === 'skip' && state.sugarSkips <= 0) {
+      alert("No Sugar Skips left!");
+      return;
+    }
+    state.pendingSugar = type;
+
+    ['btn-s-clean', 'btn-s-skip', 'btn-s-viol'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
+    el.classList.add('active');
+
+    updateUI();
+  }
+
+  function rotateUnselectedJoker() {
+    let unselectedSlots = [0, 1, 2, 3].filter(idx => idx !== state.activeJokerSlot);
+    let targetSlot = unselectedSlots[Math.floor(Math.random() * unselectedSlots.length)];
+
+    let activeIds = state.equippedJokers.map(j => j.id);
+    let availablePool = jokerPool.filter(j => !activeIds.includes(j.id));
+
+    if (availablePool.length > 0) {
+      let newJoker = availablePool[Math.floor(Math.random() * availablePool.length)];
+      let oldJokerName = state.equippedJokers[targetSlot].name;
+      state.equippedJokers[targetSlot] = newJoker;
+      alert(`🔄 JOKER ROTATION:\n"${oldJokerName}" was replaced by "${newJoker.name}"!`);
+    }
+  }
+
+  async function calculateRoundScore() {
+    let selectedDateStr = document.getElementById('log-date-picker').value;
+    if (!state.dailyLogs) state.dailyLogs = {};
+    if (state.dailyLogs[selectedDateStr]) return;
+
+    let volumeLifted = parseFloat(document.getElementById('workout-volume').value) || 0;
+    let activeJoker = state.equippedJokers[state.activeJokerSlot];
+    let baseChips = 0;
+
+    let logDateObj = new Date(selectedDateStr + "T00:00:00");
+    let dayOfWeek = logDateObj.getDay();
+
+    // 1. WORKOUT LOGIC
+    if (state.pendingWorkout === 'gym' || state.pendingWorkout === 'home') {
+      baseChips = (activeJoker.id === 'overdrive') ? 125 : 100;
+      if (activeJoker.id === 'chip_boost') baseChips += 20;
+      if (activeJoker.id === 'heavy_lifter') baseChips += Math.floor(volumeLifted / 100);
+      if (activeJoker.id === 'weekend_warrior' && (dayOfWeek === 0 || dayOfWeek === 6)) baseChips += 40;
+      if (activeJoker.id === 'glass_cannon') baseChips += 100;
+    } else if (state.pendingWorkout === 'skip') {
+      state.workoutSkips--;
+      baseChips = (activeJoker.id === 'iron_will') ? 50 : 25;
+      if (activeJoker.id === 'skip_master') state.multiplier++;
+    }
+
+    if (activeJoker.id === 'daily_streak') baseChips += (state.multiplier * 5);
+    if (activeJoker.id === 'santas_favor') baseChips += ((state.ante - 1) * 10);
+
+    // 2. SUGAR LOGIC & MULTIPLIER
+    if (state.pendingSugar === 'clean') {
+      let addMult = 1;
+      if (activeJoker.id === 'sugar_rush') addMult = 2;
+      if (activeJoker.id === 'sweet_saver') addMult += 1;
+      if (activeJoker.id === 'sugar_cleanse' && state.multiplier === 0) addMult = 3;
+      if (activeJoker.id === 'mult_doubler' && state.multiplier > 5) addMult = 2;
+      if (activeJoker.id === 'iron_grip' && volumeLifted >= 3000) addMult += 1;
+
+      state.multiplier += addMult;
+      state.cleanStreak++;
+
+      if (activeJoker.id === 'combo_breaker' && state.cleanStreak % 3 === 0) {
+        state.sugarSkips++;
+        alert("🔥 COMBO BREAKER! 3 Clean Days Streak = Gained +1 Sugar Skip!");
+      }
+    } else if (state.pendingSugar === 'skip') {
+      state.sugarSkips--;
+      state.cleanStreak = 0;
+      if (activeJoker.id === 'sweet_saver' || activeJoker.id === 'skip_master') state.multiplier++;
+    } else if (state.pendingSugar === 'viol') {
+      state.cleanStreak = 0;
+      if (activeJoker.id === 'phoenix_feather') {
+        state.multiplier = Math.floor(state.multiplier / 2);
+        alert(`🪶 PHOENIX FEATHER: Kept ${state.multiplier} Mult instead of resetting to 0!`);
+      } else {
+        state.multiplier = 0;
+      }
+
+      if (activeJoker.id === 'glass_cannon') {
+        state.sugarSkips = 0;
+        alert("💥 GLASS CANNON: Sugar Violation wiped out all your Sugar Skips!");
+      }
+    }
+
+    // 3. SCORE CALCULATION
+    let roundScore = baseChips * state.multiplier;
+
+    if (activeJoker.id === 'double_down' && (state.pendingWorkout === 'gym' || state.pendingWorkout === 'home') && state.pendingSugar === 'clean') {
+      roundScore = Math.round(roundScore * 1.5);
+    }
+
+    if (activeJoker.id === 'last_stand' && state.workoutSkips === 0 && state.sugarSkips === 0) {
+      roundScore = Math.round(roundScore * 1.5);
+    }
+
+    if (activeJoker.id === 'end_game' && (state.roundInAnte === 6 || state.roundInAnte === 7)) {
+      roundScore = Math.round(roundScore * 1.25);
+    }
+
+    state.anteChips += roundScore;
+    state.totalChips += roundScore;
+
+    state.dailyLogs[selectedDateStr] = {
+      workout: state.pendingWorkout,
+      sugar: state.pendingSugar,
+      volume: volumeLifted,
+      score: roundScore
+    };
+
+    alert(`DATE ${selectedDateStr} LOGGED!\nEarned: ${roundScore} Chips (${baseChips} Chips x ${state.multiplier} Mult)\nVolume: ${volumeLifted} kg`);
+
+    rotateUnselectedJoker();
+
+    document.getElementById('workout-volume').value = '';
+    resetSelectionToDefaults();
+
+    state.roundInAnte++;
+
+    if (state.roundInAnte > 7) {
+      let target = anteTargets[state.ante - 1] || (4900 * state.ante - 2100);
+      if (state.anteChips >= target) {
+        state.sugarSkips++;
+        alert(`🎉 ANTE ${state.ante} CLEARED!\nReward: +1 Sugar Skip gained!`);
+      } else {
+        alert(`❌ ANTE ${state.ante} FAILED!`);
+      }
+      state.ante++;
+      state.roundInAnte = 1;
+      state.anteChips = 0;
+    }
+
+    await saveStateToFirebase();
+    updateUI();
+  }
+
+  function updateTimer() {
+    let now = new Date();
+    let ptTimeString = now.toLocaleString("en-US", { timeZone: "Europe/Lisbon" });
+    let ptNow = new Date(ptTimeString);
+    
+    let ptMidnight = new Date(ptNow);
+    ptMidnight.setHours(24, 0, 0, 0);
+
+    let diff = ptMidnight - ptNow;
+    let hours = Math.floor(diff / (1000 * 60 * 60));
+    let mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    let secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+    let todayPT = getPTDateString();
+    if (state.dailyLogs && state.dailyLogs[todayPT]) {
+      document.getElementById('midnight-timer').innerText = `NEXT ROUND IN: ${hours}h ${mins}m ${secs}s`;
+    } else {
+      document.getElementById('midnight-timer').innerText = `🟢 READY`;
+    }
+  }
+
+  // EVENT LISTENERS
   document.getElementById('rules-toggle').onclick = () => {
     const content = document.getElementById('rules-content');
     const isVisible = content.style.display === 'block';
     content.style.display = isVisible ? 'none' : 'block';
-    document.getElementById('rules-toggle').innerText = isVisible ? '📜 REGRAS DO JOGO 🎮 ▼' : '📜 REGRAS DO JOGO 🎮 ▲';
+    document.getElementById('rules-toggle').innerText = isVisible ? '📜 HOW TO PLAY & RULES ▼' : '📜 HOW TO PLAY & RULES ▲';
   };
 
   document.getElementById('log-date-picker').addEventListener('change', () => {
@@ -921,20 +899,29 @@
     updateUI();
   });
 
-  document.getElementById('btn-t-gym').onclick = (e) => selectStatus('gym', e.currentTarget);
-  document.getElementById('btn-t-skip').onclick = (e) => selectStatus('skip', e.currentTarget);
-  document.getElementById('btn-calculate').onclick = saveLog;
+  document.getElementById('btn-w-gym').onclick = (e) => selectWorkout('gym', e.currentTarget);
+  document.getElementById('btn-w-home').onclick = (e) => selectWorkout('home', e.currentTarget);
+  document.getElementById('btn-w-skip').onclick = (e) => selectWorkout('skip', e.currentTarget);
+  document.getElementById('btn-w-viol').onclick = (e) => selectWorkout('viol', e.currentTarget);
+
+  document.getElementById('btn-s-clean').onclick = (e) => selectSugar('clean', e.currentTarget);
+  document.getElementById('btn-s-skip').onclick = (e) => selectSugar('skip', e.currentTarget);
+  document.getElementById('btn-s-viol').onclick = (e) => selectSugar('viol', e.currentTarget);
+
+  document.getElementById('btn-calculate').onclick = calculateRoundScore;
 
   document.getElementById('btn-reset-game').onclick = async () => {
-    if (confirm("⚠️ Tens a certeza de que queres repor todo o jogo do zero?")) {
+    if (confirm("Are you sure you want to reset all campaign progress? This cannot be undone!")) {
       state = { ...defaultState, dailyLogs: {} };
       await saveStateToFirebase();
       location.reload();
     }
   };
 
+  // INITIALIZATION
   window.addEventListener('DOMContentLoaded', () => {
     loadStateFromFirebase();
+    setInterval(updateTimer, 1000);
   });
 </script>
 </body>
