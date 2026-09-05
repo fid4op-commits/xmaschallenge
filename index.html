@@ -1065,7 +1065,11 @@
     let isAlreadyLogged = !!(state.dailyLogs && state.dailyLogs[selectedDate]);
 
     if (isAlreadyLogged) {
-      document.getElementById('midnight-timer').innerHTML = `✅ THIS DAY IS ALREADY LOGGED!`;
+      document.getElementById('midnight-timer').innerHTML = `✅ THIS DAY IS ALREADY LOGGED!<br><br>` +
+        `DAILY SUMMARY (${selectedDate})<br>` +
+        `Workout: ${state.dailyLogs[selectedDate].workout === 'gym' ? '🏋️ Gym' : state.dailyLogs[selectedDate].workout === 'home' ? '🏠 Home' : state.dailyLogs[selectedDate].workout === 'skip' ? '🛡️ Workout Skip' : '⚠️ Violation'} | Load: ${state.dailyLogs[selectedDate].volume || 0} kg<br>` +
+        `Sugar: ${state.dailyLogs[selectedDate].sugar === 'clean' ? '✅ Sugar Free' : state.dailyLogs[selectedDate].sugar === 'skip' ? '🍬 Sugar Skip' : '⚠️ Sugar Violation'}<br>` +
+        `Chips Earned: +${state.dailyLogs[selectedDate].score || 0} Chips`;
       return;
     }
 
