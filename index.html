@@ -157,6 +157,41 @@
       box-shadow: 0 0 0 #005bb5;
     }
 
+    .btn-secondary {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      background: transparent;
+      color: var(--balatro-yellow);
+      border: 1px solid var(--balatro-yellow);
+      padding: 10px;
+      border-radius: 8px;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .rules-content {
+      display: none;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 8px;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: var(--text-main);
+    }
+
+    .rules-content ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    .rules-content li {
+      margin-bottom: 6px;
+    }
+
     .joker-card {
       background: rgba(0, 136, 255, 0.08);
       border: 1px dashed var(--balatro-blue);
@@ -215,6 +250,20 @@
     <button class="btn-main" id="btn-submit-day">SUBMIT DAY LOG</button>
   </div>
 
+  <!-- HOW TO PLAY / RULES SECTION -->
+  <div class="card">
+    <button class="btn-secondary" id="btn-toggle-rules">📖 HOW TO PLAY / RULES</button>
+    <div class="rules-content" id="rules-box">
+      <div style="font-weight: bold; color: var(--balatro-yellow); margin-bottom: 6px;">GAME MECHANICS:</div>
+      <ul>
+        <li><b>🏋️ Workouts (Chips):</b> Gym or Home workouts add <b>+100 Base Chips</b>. Workout Skips grant +25 Chips.</li>
+        <li><b>🍬 Sugar-Free (Mult):</b> Each clean day increases your <b>Mult (+1)</b>. Sugar violations reset your Mult to zero.</li>
+        <li><b>🛡️ Skips:</b> You start with 5 non-renewable Workout Skips. Clearing an Ante rewards a Sugar Skip to protect your streak.</li>
+        <li><b>🏆 Campaign Target:</b> Clear all 16 Antes before Christmas by scoring enough Chips in each 7-round cycle!</li>
+      </ul>
+    </div>
+  </div>
+
   <!-- PERKS / JOKERS SECTION -->
   <div class="card">
     <div class="section-title">ACTIVE JOKERS</div>
@@ -267,8 +316,20 @@
   const displayChips = document.getElementById('display-chips');
   const displayMult = document.getElementById('display-mult');
   const btnSubmit = document.getElementById('btn-submit-day');
+  
+  // TOGGLE RULES BOX
+  const btnToggleRules = document.getElementById('btn-toggle-rules');
+  const rulesBox = document.getElementById('rules-box');
 
-  // CARREGAR DADOS DO CARLOS
+  btnToggleRules.onclick = () => {
+    if (rulesBox.style.display === "block") {
+      rulesBox.style.display = "none";
+    } else {
+      rulesBox.style.display = "block";
+    }
+  };
+
+  // CARREGAR DADOS DO CARLOS DO FIREBASE
   db.collection("users").doc("carlos").get().then((doc) => {
     if (doc.exists) {
       const data = doc.data();
