@@ -1,113 +1,766 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>No Sugar 'Til Xmas</title>
-    <style>
-        body {
-            background-color: #0b0f19;
-            color: #fff;
-            font-family: monospace, sans-serif;
-            margin: 0;
-            padding: 16px;
-            display: flex;
-            justify-content: center;
-        }
-        .app-container {
-            width: 100%;
-            max-width: 450px;
-        }
-        .spectral-card-container {
-            background: #111625;
-            border: 2px solid #9c27b0;
-            border-radius: 12px;
-            padding: 16px;
-            margin: 20px 0;
-            color: #fff;
-            box-shadow: 0 0 15px rgba(156, 39, 176, 0.3);
-        }
-        .spectral-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .spectral-title {
-            color: #e040fb;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .spectral-timer {
-            font-size: 12px;
-            background: #221a36;
-            padding: 4px 8px;
-            border-radius: 6px;
-            border: 1px solid #7b1fa2;
-            color: #ba68c8;
-        }
-        .spectral-question {
-            font-size: 13px;
-            margin-bottom: 12px;
-            color: #cfd8dc;
-        }
-        .spectral-options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .spectral-btn {
-            background: #1e2538;
-            border: 1px solid #3f51b5;
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 6px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 12px;
-            font-family: monospace;
-            transition: background 0.2s;
-        }
-        .spectral-btn:hover {
-            background: #28324f;
-            border-color: #5c6bc0;
-        }
-        .spectral-feedback {
-            display: none;
-            margin-top: 10px;
-            font-size: 13px;
-            font-weight: bold;
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>No Sugar 'Til Xmas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030712;
+      --card: #0b1329;
+      --card-border: #1d3557;
+      --green: #10b981;
+      --blue: #3b82f6;
+      --red: #ef4444;
+      --white: #ffffff;
+      --muted: #93c5fd;
+      --yellow: #facc15;
+      --purple: #8b5cf6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body { 
+      font-family: 'Rajdhani', system-ui, sans-serif; 
+      background: var(--bg); 
+      color: var(--white); 
+      margin: 0; 
+      padding: 12px;
+      background-image: 
+        radial-gradient(rgba(59, 130, 246, 0.07) 1px, transparent 0),
+        radial-gradient(rgba(139, 92, 246, 0.04) 1px, transparent 0);
+      background-size: 32px 32px;
+      background-position: 0 0, 16px 16px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .container { 
+      max-width: 480px; 
+      margin: 0 auto; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+    }
+    
+    .card { 
+      background: var(--card); 
+      border: 1.5px solid var(--card-border); 
+      border-radius: 12px; 
+      padding: 14px; 
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06); 
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0.5;
+    }
+
+    .main-title {
+      font-family: 'Press Start 2P', monospace;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--green);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      line-height: 1.4;
+      text-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+    }
+
+    .header { 
+      font-family: 'Press Start 2P', monospace;
+      text-align: center; 
+      font-size: 0.85rem; 
+      color: var(--yellow); 
+      text-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
+    }
+
+    /* Rules Collapsible Section */
+    .rules-toggle {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.55rem;
+      color: var(--blue);
+      text-align: center;
+      padding: 8px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px dashed var(--blue);
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      user-select: none;
+      transition: all 0.2s;
+    }
+
+    .rules-toggle:hover {
+      background: rgba(59, 130, 246, 0.2);
+    }
+
+    .rules-content {
+      display: none;
+      font-size: 0.8rem;
+      color: #e2e8f0;
+      line-height: 1.4;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--card-border);
+    }
+
+    .rules-content ul {
+      margin: 4px 0 0 0;
+      padding-left: 18px;
+    }
+
+    .rules-content li {
+      margin-bottom: 4px;
+    }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+    
+    .stat-box { 
+      background: rgba(0, 0, 0, 0.4); 
+      border: 1px solid var(--card-border);
+      padding: 10px 8px; 
+      border-radius: 8px; 
+      text-align: center; 
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+    }
+    
+    .stat-val { 
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.9rem; 
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .stat-lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+
+    /* Weekly Grid (Mon -> Sun) */
+    .week-days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .day-cell {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 6px 2px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 68px;
+      transition: transform 0.2s;
+    }
+
+    .day-cell.today {
+      border-color: var(--yellow);
+      background: rgba(250, 204, 21, 0.1);
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
+    }
+
+    .day-cell-name {
+      font-size: 0.5rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .day-cell.today .day-cell-name {
+      color: var(--yellow);
+    }
+
+    .day-cell-status {
+      font-size: 0.7rem;
+    }
+
+    .day-cell-meta {
+      font-size: 0.45rem;
+      color: var(--yellow);
+      font-weight: bold;
+    }
+
+    /* Load Bar Chart */
+    .chart-container {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 10px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .chart-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.5rem;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .bars-wrapper {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      align-items: flex-end;
+      height: 70px;
+      padding-top: 6px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 4px;
+    }
+
+    .bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .bar-fill {
+      width: 10px;
+      background: linear-gradient(180deg, var(--blue), var(--green));
+      border-radius: 3px 3px 0 0;
+      transition: height 0.4s ease;
+      min-height: 2px;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
+    }
+
+    .bar-label {
+      font-size: 0.45rem;
+      color: var(--muted);
+      margin-top: 3px;
+      text-transform: uppercase;
+    }
+
+    .progress-bg { 
+      background: rgba(0, 0, 0, 0.6); 
+      border: 1px solid var(--card-border);
+      border-radius: 6px; 
+      height: 12px; 
+      overflow: hidden; 
+      margin-top: 6px; 
+      padding: 2px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .progress-fill { 
+      background: linear-gradient(90deg, #059669, var(--green)); 
+      height: 100%; 
+      width: 0%; 
+      border-radius: 3px;
+      transition: width 0.4s ease; 
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+    }
+    
+    .progress-fill-global { 
+      background: linear-gradient(90deg, #1d4ed8, var(--blue)); 
+      height: 100%; 
+      width: 0%; 
+      border-radius: 3px;
+      transition: width 0.4s ease; 
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .btn { 
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(255, 255, 255, 0.03); 
+      color: var(--white); 
+      border: 1px solid var(--card-border); 
+      padding: 8px 6px; 
+      border-radius: 8px; 
+      font-weight: 700; 
+      cursor: pointer; 
+      width: 100%; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.2;
+      min-height: 52px;
+      transition: all 0.2s;
+      opacity: 0.45;
+    }
+
+    .btn.active {
+      opacity: 1 !important;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+      background: rgba(59, 130, 246, 0.12);
+    }
+    
+    .btn:hover:not(:disabled), .btn:active:not(:disabled) { 
+      opacity: 0.9;
+    }
+    .btn:disabled { opacity: 0.2; cursor: not-allowed; }
+    
+    .btn-green.active { border-color: var(--green); color: var(--green); background: rgba(16, 185, 129, 0.15); box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+    .btn-blue.active { border-color: var(--blue); color: var(--blue); background: rgba(59, 130, 246, 0.15); box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+    
+    .btn-red { 
+      border: 1.5px solid var(--red) !important; 
+      color: var(--red) !important; 
+      background: rgba(239, 68, 68, 0.06) !important;
+    }
+    
+    .btn-red.active {
+      background: rgba(239, 68, 68, 0.2) !important;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+      opacity: 1 !important;
+    }
+
+    .btn-next { 
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      background: linear-gradient(135deg, #059669, var(--green)); 
+      color: #000; 
+      border: none;
+      margin-top: 12px; 
+      padding: 12px; 
+      font-weight: bold;
+      min-height: 46px;
+      width: 100%;
+      border-radius: 8px;
+      cursor: pointer;
+      opacity: 1;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      transition: transform 0.1s, box-shadow 0.2s;
+    }
+
+    .btn-next:hover {
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+    
+    .section-title { 
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.55rem; 
+      color: var(--green); 
+      margin-bottom: 6px; 
+      text-transform: uppercase; 
+    }
+    
+    .status-badge { 
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.55rem; 
+      padding: 4px 8px; 
+      border-radius: 4px; 
+      background: rgba(59, 130, 246, 0.15); 
+      border: 1px solid var(--blue);
+      color: var(--blue);
+      display: inline-block; 
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
+    }
+    
+    .joker-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 6px; }
+    
+    .joker-card { 
+      border: 1px solid var(--card-border); 
+      background: rgba(0,0,0,0.3); 
+      padding: 8px; 
+      border-radius: 8px; 
+      font-size: 0.75rem; 
+      cursor: pointer; 
+      text-align: center; 
+      transition: all 0.2s;
+      color: var(--white);
+      line-height: 1.3;
+    }
+    
+    .joker-card.selected { 
+      border-color: var(--blue); 
+      background: rgba(59, 130, 246, 0.2); 
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+    
+    .timer-box { 
+      font-family: 'Press Start 2P', monospace;
+      text-align: center; 
+      font-size: 0.5rem; 
+      color: var(--blue); 
+      margin-top: 10px; 
+      line-height: 1.4;
+      text-shadow: 0 0 6px rgba(59, 130, 246, 0.3);
+    }
+
+    .reset-link {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.7rem;
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 4px;
+      opacity: 0.7;
+    }
+    .reset-link:hover { opacity: 1; }
+
+    .sync-status {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.5rem;
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .date-picker-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .date-picker-box input {
+      background: transparent;
+      border: none;
+      color: var(--white);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.95rem;
+      font-weight: bold;
+      color-scheme: dark;
+    }
+
+    .volume-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(16, 185, 129, 0.08));
+      border: 1.5px solid var(--blue);
+      border-radius: 8px;
+      padding: 8px 12px;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+    }
+
+    .volume-box input {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--blue);
+      border-radius: 6px;
+      color: var(--white);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.8rem;
+      padding: 6px;
+      width: 90px;
+      text-align: center;
+    }
+
+    /* VIBRANT & COLORFUL LOGGED ZONE REDESIGN */
+    .daily-summary-panel {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(59, 130, 246, 0.14));
+      border: 2px solid var(--green);
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 8px;
+      text-align: center;
+      display: none;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
+    }
+
+    .daily-summary-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      color: var(--green);
+      margin-bottom: 8px;
+      text-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+    }
+
+    .logged-status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1.5px solid var(--green);
+      color: var(--white);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.5rem;
+      padding: 5px 8px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      width: 100%;
+      box-shadow: inset 0 0 6px rgba(16, 185, 129, 0.2);
+    }
+
+    .logged-pills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .logged-pill {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .logged-pill-label {
+      font-size: 0.55rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .logged-pill-value {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .logged-chips-banner {
+      background: rgba(59, 130, 246, 0.2);
+      border: 1.5px solid var(--blue);
+      border-radius: 6px;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--white);
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    .logged-chips-banner span:last-child {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.7rem;
+      color: var(--yellow);
+      text-shadow: 0 0 6px rgba(250, 204, 21, 0.4);
+    }
+
+    .lock-notice {
+      color: var(--red);
+      font-size: 0.75rem;
+      text-align: center;
+      margin-top: 8px;
+      font-weight: bold;
+      display: none;
+    }
+
+    /* SPECTRAL CARD STYLES */
+    .spectral-card-container {
+      background: #111625;
+      border: 2px solid #9c27b0;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 12px 0;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(156, 39, 176, 0.3);
+    }
+    .spectral-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .spectral-title {
+      color: #e040fb;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .spectral-timer {
+      font-size: 12px;
+      background: #221a36;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid #7b1fa2;
+      color: #ba68c8;
+    }
+    .spectral-question {
+      font-size: 13px;
+      margin-bottom: 12px;
+      color: #cfd8dc;
+    }
+    .spectral-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .spectral-btn {
+      background: #1e2538;
+      border: 1px solid #3f51b5;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: monospace;
+      transition: background 0.2s;
+    }
+    .spectral-btn:hover {
+      background: #28324f;
+      border-color: #5c6bc0;
+    }
+    .spectral-feedback {
+      display: none;
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="container">
 
-    <!-- APP HEADER -->
-    <div style="text-align: center; margin-bottom: 20px;">
-        <h2 style="color: #4caf50; margin: 0; font-size: 18px;">🌲 NO SUGAR 'TIL XMAS 🌲</h2>
-        <span style="font-size: 11px; color: #81c784;">☁️ CLOUD SYNCED</span>
+  <!-- PROGRESS DASHBOARD -->
+  <div class="card">
+    <div class="main-title">🎄 No Sugar 'Til Xmas 🎄</div>
+    <div class="sync-status" id="sync-status">⚡ CONNECTING TO FIREBASE...</div>
+    
+    <!-- Collapsible Challenge Rules -->
+    <div class="rules-toggle" id="rules-toggle">📜 HOW TO PLAY & RULES ▼</div>
+    <div class="rules-content" id="rules-content">
+      <ul>
+        <li><b>Daily Scoring:</b> Daily Chips = Base Chips × Active Multiplier.</li>
+        <li><b>Workouts:</b> Gym / Home workouts grant <b>100 Base Chips</b>. Workout Skip grants 25 Chips. Violations give 0 Chips. You have <b>5 Workout Skips total</b> for the entire campaign (non-renewable).</li>
+        <li><b>Sugar Control:</b> Sugar Free days add <b>+1 Multiplier</b>. Sugar Skip maintains your Mult. Sugar Violations <b>reset Multiplier to 0</b>.</li>
+        <li><b>Weekly View:</b> Track your progress from Monday to Sunday with chips and lifted load!</li>
+        <li><b>Jokers:</b> Select 1 active Joker per round for bonuses. Unselected Jokers rotate automatically after each round.</li>
+      </ul>
     </div>
 
-    <!-- 🔮 DAILY MYSTERY SPECTRAL CARD (EXPERT TRIVIA + 24H COOLDOWN) -->
-    <div class="spectral-card-container">
-        <div class="spectral-header">
-            <span id="spectral-card-name" class="spectral-title">🔮 DAILY SPECTRAL</span>
-            <span id="spectral-timer" class="spectral-timer">⏳ Loading...</span>
-        </div>
-        
-        <div id="spectral-content">
-            <p id="spectral-question" class="spectral-question">Loading question...</p>
-            <div id="spectral-options" class="spectral-options">
-                <!-- Dynamically populated via JS -->
-            </div>
-        </div>
-        <div id="spectral-feedback" class="spectral-feedback"></div>
+    <div class="header" id="ante-title" style="margin-top: 6px;">ANTE 1 / 16</div>
+    <div style="text-align: center; margin-top: 4px;">
+      <span class="status-badge" id="round-tracker">ROUND 1 OF 7</span>
     </div>
 
-    <!-- Rest of your application (Jokers, Stats, Antes, etc.) stays here safely -->
+    <!-- WEEKLY VIEW (MON → SUN) -->
+    <div style="margin-top: 8px;">
+      <div style="font-size: 0.6rem; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; color: var(--blue);">🗓️ WEEKLY VIEW (DAILY CHIPS):</div>
+      <div class="week-days-grid" id="week-days-grid"></div>
+    </div>
+
+    <!-- WEEKLY LOAD CHART -->
+    <div class="chart-container">
+      <div class="chart-title">📊 Lifted Load Chart (kg)</div>
+      <div class="bars-wrapper" id="bars-wrapper">
+        <!-- Filled via JS -->
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-val" id="current-mult" style="color: var(--green);">+0</div>
+        <div class="stat-lbl">Active Mult</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="skips-display" style="font-size: 0.8rem; margin-top: 2px;">🏋️5 | 🍬1</div>
+        <div class="stat-lbl">Skips Left</div>
+      </div>
+    </div>
+
+    <!-- Ante Progress -->
+    <div style="margin-top: 8px;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 700;">
+        <span>ANTE CHIPS</span>
+        <span id="ante-progress-text" style="color: var(--green);">0 / 2,800</span>
+      </div>
+      <div class="progress-bg">
+        <div class="progress-fill" id="ante-progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- Global Progress -->
+    <div style="margin-top: 6px;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 700;">
+        <span>TOTAL CAMPAIGN</span>
+        <span id="global-progress-text" style="color: var(--blue);">0%</span>
+      </div>
+      <div class="progress-bg">
+        <div class="progress-fill-global" id="global-progress-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOKERS SELECTOR -->
+  <div class="card">
+    <div class="section-title">Jokers</div>
+    <div class="joker-grid" id="joker-container">
+      <!-- Generated via JS -->
+    </div>
+  </div>
+
+  <!-- 🔮 DAILY MYSTERY SPECTRAL CARD -->
+  <div class="spectral-card-container">
+    <div class="spectral-header">
+      <span id="spectral-card-name" class="spectral-title">🔮 DAILY SPECTRAL</span>
+      <span id="spectral-timer" class="spectral-timer">⏳ Loading...</span>
+    </div>
+    
+    <div id="spectral-content">
+      <p id="spectral-question" class="spectral-question">Loading question...</p>
+      <div id="spectral-options" class="spectral-options">
+        <!-- Dynamically populated via JS -->
+      </div>
+    </div>
+    <div id="spectral-feedback" class="spectral-feedback"></div>
+  </div>
+
+  <!-- DAILY LOGS -->
+  <div class="card">
+    <div class="section-title">Log Date</div>
+    <div class="date-picker-box">
+      <span style="font-size: 0.75rem; font-weight: 700;">📅 DATE:</span>
+      <input type="date" id="log-date-picker" min="2026-09-01">
+    </div>
+
+    <div id="log-controls-container">
+      <div class="section-title">1. Workout Log</div>
+      <div class="btn-grid">
+        <button class="btn btn-green active" id="btn-w-gym"><span>🏋️ Gym + Pushups</span><span style="font-size: 0.65rem; color: var(--muted);">(100 Chips)</span></button>
+        <button class="btn btn-green" id="btn-w-home"><span>🏠 Home + Pushups</span><span style="font-size: 0.65rem; color: var(--muted);">(100 Chips)</span></button>
+        <button class="btn btn-blue" id="btn-w-skip"><span>🛡️ Workout Skip</span><span id="skip-chip-val" style="font-size: 0.65rem; color: var(--muted);">(25 Chips)</span></button>
+        <button class="btn btn-red" id="btn-w-viol"><span>⚠️ Violation</span><span style="font-size: 0.65rem; color: #fca5a5;">(0 Chips)</span></button>
+      </div>
+
+      <!-- Volume Input -->
+      <div class="volume-box">
+        <div>
+          <span style="font-family: 'Press Start 2P', monospace; font-size: 0.55rem; color: var(--blue); display: block; margin-bottom: 2px;">🏋️ VOLUME LIFTED</span>
+          <span style="font-size: 0.7rem; color: var(--muted); font-weight: 700;">Total weight lifted today</span>
+        </div>
+        <div>
+          <input type="number" id="workout-volume" placeholder="0" min="0" step="0.5">
+          <span style="font-size: 0.65rem; color: var(--white); font-weight: bold; margin-left: 2px;">KG</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 
@@ -179,7 +832,6 @@ const expertQuestionsBank = [
 const COOLDOWN_HOURS = 24;
 const COOLDOWN_MS = COOLDOWN_HOURS * 60 * 60 * 1000;
 
-// Selects the question based on the current day of the year to rotate cyclically until Christmas
 function getCurrentQuestion() {
     const now = new Date();
     const start = new Date(now.getFullYear(), 0, 0);
@@ -269,7 +921,7 @@ function checkSpectralAnswer(optionIndex) {
         feedbackEl.innerText = '✨ Correct answer, master! +5 Chips bonus added to your next log!';
     } else {
         feedbackEl.style.color = '#ff5252';
-        feedbackEl.innerText = '❌ Wrong! You need to study the wiki more. Come back in 24h!';
+        feedbackEl.innerText = '❌ Wrong! Come back in 24h!';
     }
 }
 
