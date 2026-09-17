@@ -83,6 +83,7 @@
       text-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
     }
 
+    /* Rules Collapsible Section */
     .rules-toggle {
       font-family: 'Press Start 2P', monospace;
       font-size: 0.55rem;
@@ -95,6 +96,11 @@
       cursor: pointer;
       margin-bottom: 8px;
       user-select: none;
+      transition: all 0.2s;
+    }
+
+    .rules-toggle:hover {
+      background: rgba(59, 130, 246, 0.2);
     }
 
     .rules-content {
@@ -107,6 +113,15 @@
       border-top: 1px dashed var(--card-border);
     }
 
+    .rules-content ul {
+      margin: 4px 0 0 0;
+      padding-left: 18px;
+    }
+
+    .rules-content li {
+      margin-bottom: 4px;
+    }
+
     .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
     
     .stat-box { 
@@ -115,6 +130,7 @@
       padding: 10px 8px; 
       border-radius: 8px; 
       text-align: center; 
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
     }
     
     .stat-val { 
@@ -124,8 +140,9 @@
       margin-bottom: 4px;
     }
 
-    .stat-lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+    .stat-lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
 
+    /* Weekly Grid (Mon -> Sun) */
     .week-days-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -144,14 +161,44 @@
       align-items: center;
       justify-content: space-between;
       min-height: 68px;
+      transition: transform 0.2s;
     }
 
+    .day-cell.today {
+      border-color: var(--yellow);
+      background: rgba(250, 204, 21, 0.1);
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
+    }
+
+    .day-cell-name {
+      font-size: 0.5rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .day-cell.today .day-cell-name {
+      color: var(--yellow);
+    }
+
+    .day-cell-status {
+      font-size: 0.7rem;
+    }
+
+    .day-cell-meta {
+      font-size: 0.45rem;
+      color: var(--yellow);
+      font-weight: bold;
+    }
+
+    /* Load Bar Chart */
     .chart-container {
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--card-border);
       border-radius: 8px;
       padding: 10px;
       margin-top: 10px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
     }
 
     .chart-title {
@@ -171,6 +218,31 @@
       height: 70px;
       padding-top: 6px;
       border-bottom: 1px solid var(--card-border);
+      padding-bottom: 4px;
+    }
+
+    .bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .bar-fill {
+      width: 10px;
+      background: linear-gradient(180deg, var(--blue), var(--green));
+      border-radius: 3px 3px 0 0;
+      transition: height 0.4s ease;
+      min-height: 2px;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
+    }
+
+    .bar-label {
+      font-size: 0.45rem;
+      color: var(--muted);
+      margin-top: 3px;
+      text-transform: uppercase;
     }
 
     .progress-bg { 
@@ -181,6 +253,7 @@
       overflow: hidden; 
       margin-top: 6px; 
       padding: 2px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
     }
     
     .progress-fill { 
@@ -188,6 +261,8 @@
       height: 100%; 
       width: 0%; 
       border-radius: 3px;
+      transition: width 0.4s ease; 
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
     }
     
     .progress-fill-global { 
@@ -195,6 +270,8 @@
       height: 100%; 
       width: 0%; 
       border-radius: 3px;
+      transition: width 0.4s ease; 
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
     }
 
     .btn-grid {
@@ -208,6 +285,7 @@
       font-family: 'Rajdhani', sans-serif;
       font-size: 0.85rem;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
       background: rgba(255, 255, 255, 0.03); 
       color: var(--white); 
       border: 1px solid var(--card-border); 
@@ -215,19 +293,43 @@
       border-radius: 8px; 
       font-weight: 700; 
       cursor: pointer; 
+      width: 100%; 
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
+      line-height: 1.2;
       min-height: 52px;
+      transition: all 0.2s;
       opacity: 0.45;
     }
-    .btn.active { opacity: 1; background: rgba(59, 130, 246, 0.12); border-color: var(--blue); }
-    .btn-green.active { border-color: var(--green); color: var(--green); background: rgba(16, 185, 129, 0.15); }
-    .btn-blue.active { border-color: var(--blue); color: var(--blue); background: rgba(59, 130, 246, 0.15); }
-    .btn-red { border: 1.5px solid var(--red) !important; color: var(--red) !important; background: rgba(239, 68, 68, 0.06) !important; }
-    .btn-red.active { background: rgba(239, 68, 68, 0.2) !important; opacity: 1 !important; }
+
+    .btn.active {
+      opacity: 1 !important;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+      background: rgba(59, 130, 246, 0.12);
+    }
+    
+    .btn:hover:not(:disabled), .btn:active:not(:disabled) { 
+      opacity: 0.9;
+    }
+    .btn:disabled { opacity: 0.2; cursor: not-allowed; }
+    
+    .btn-green.active { border-color: var(--green); color: var(--green); background: rgba(16, 185, 129, 0.15); box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+    .btn-blue.active { border-color: var(--blue); color: var(--blue); background: rgba(59, 130, 246, 0.15); box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+    
+    .btn-red { 
+      border: 1.5px solid var(--red) !important; 
+      color: var(--red) !important; 
+      background: rgba(239, 68, 68, 0.06) !important;
+    }
+    
+    .btn-red.active {
+      background: rgba(239, 68, 68, 0.2) !important;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+      opacity: 1 !important;
+    }
 
     .section-title { 
       font-family: 'Press Start 2P', monospace;
@@ -246,6 +348,7 @@
       border: 1px solid var(--blue);
       color: var(--blue);
       display: inline-block; 
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
     }
     
     .joker-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 6px; }
@@ -256,8 +359,17 @@
       padding: 8px; 
       border-radius: 8px; 
       font-size: 0.75rem; 
+      cursor: pointer; 
       text-align: center; 
+      transition: all 0.2s;
       color: var(--white);
+      line-height: 1.3;
+    }
+    
+    .joker-card.selected { 
+      border-color: var(--blue); 
+      background: rgba(59, 130, 246, 0.2); 
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
     }
 
     .sync-status {
@@ -277,6 +389,7 @@
       border-radius: 8px;
       padding: 8px 12px;
       margin-bottom: 8px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
     }
 
     .date-picker-box input {
@@ -298,6 +411,7 @@
       border: 1.5px solid var(--blue);
       border-radius: 8px;
       padding: 8px 12px;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
     }
 
     .volume-box input {
@@ -383,13 +497,17 @@
   <!-- PROGRESS DASHBOARD -->
   <div class="card">
     <div class="main-title">🎄 No Sugar 'Til Xmas 🎄</div>
-    <div class="sync-status" id="sync-status">⚡ ONLINE MODE (LOCAL)</div>
+    <div class="sync-status" id="sync-status">⚡ CONNECTING TO FIREBASE...</div>
     
+    <!-- Collapsible Challenge Rules -->
     <div class="rules-toggle" id="rules-toggle">📜 HOW TO PLAY & RULES ▼</div>
     <div class="rules-content" id="rules-content">
       <ul>
         <li><b>Daily Scoring:</b> Daily Chips = Base Chips × Active Multiplier.</li>
-        <li><b>Workouts:</b> Gym / Home workouts grant <b>100 Base Chips</b>.</li>
+        <li><b>Workouts:</b> Gym / Home workouts grant <b>100 Base Chips</b>. Workout Skip grants 25 Chips. Violations give 0 Chips. You have <b>5 Workout Skips total</b> for the entire campaign (non-renewable).</li>
+        <li><b>Sugar Control:</b> Sugar Free days add <b>+1 Multiplier</b>. Sugar Skip maintains your Mult. Sugar Violations <b>reset Multiplier to 0</b>.</li>
+        <li><b>Weekly View:</b> Track your progress from Monday to Sunday with chips and lifted load!</li>
+        <li><b>Jokers:</b> Select 1 active Joker per round for bonuses. Unselected Jokers rotate automatically after each round.</li>
       </ul>
     </div>
 
@@ -398,22 +516,18 @@
       <span class="status-badge" id="round-tracker">ROUND 1 OF 7</span>
     </div>
 
+    <!-- WEEKLY VIEW (MON → SUN) -->
     <div style="margin-top: 8px;">
       <div style="font-size: 0.6rem; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; color: var(--blue);">🗓️ WEEKLY VIEW (DAILY CHIPS):</div>
-      <div class="week-days-grid" id="week-days-grid">
-        <div class="day-cell"><span class="day-cell-name">Mon</span><span class="day-cell-status">⬜</span></div>
-        <div class="day-cell"><span class="day-cell-name">Tue</span><span class="day-cell-status">⬜</span></div>
-        <div class="day-cell"><span class="day-cell-name">Wed</span><span class="day-cell-status">⬜</span></div>
-        <div class="day-cell"><span class="day-cell-name">Thu</span><span class="day-cell-status">⬜</span></div>
-        <div class="day-cell"><span class="day-cell-name">Fri</span><span class="day-cell-status">⬜</span></div>
-        <div class="day-cell"><span class="day-cell-name">Sat</span><span class="day-cell-status">⬜</span></div>
-        <div class="day-cell"><span class="day-cell-name">Sun</span><span class="day-cell-status">⬜</span></div>
-      </div>
+      <div class="week-days-grid" id="week-days-grid"></div>
     </div>
 
+    <!-- WEEKLY LOAD CHART -->
     <div class="chart-container">
       <div class="chart-title">📊 Lifted Load Chart (kg)</div>
-      <div class="bars-wrapper" id="bars-wrapper"></div>
+      <div class="bars-wrapper" id="bars-wrapper">
+        <!-- Filled via JS -->
+      </div>
     </div>
 
     <div class="stat-grid">
@@ -427,23 +541,25 @@
       </div>
     </div>
 
+    <!-- Ante Progress -->
     <div style="margin-top: 8px;">
       <div style="display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 700;">
         <span>ANTE CHIPS</span>
         <span id="ante-progress-text" style="color: var(--green);">0 / 2,800</span>
       </div>
       <div class="progress-bg">
-        <div class="progress-fill" id="ante-progress-bar" style="width: 0%;"></div>
+        <div class="progress-fill" id="ante-progress-bar"></div>
       </div>
     </div>
 
+    <!-- Global Progress -->
     <div style="margin-top: 6px;">
       <div style="display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 700;">
         <span>TOTAL CAMPAIGN</span>
         <span id="global-progress-text" style="color: var(--blue);">0%</span>
       </div>
       <div class="progress-bg">
-        <div class="progress-fill-global" id="global-progress-bar" style="width: 0%;"></div>
+        <div class="progress-fill-global" id="global-progress-bar"></div>
       </div>
     </div>
   </div>
@@ -452,8 +568,7 @@
   <div class="card">
     <div class="section-title">Jokers</div>
     <div class="joker-grid" id="joker-container">
-      <div class="joker-card selected"><b>Blueprint</b></div>
-      <div class="joker-card"><b>Brainstorm</b></div>
+      <!-- Generated via JS -->
     </div>
   </div>
 
@@ -466,7 +581,9 @@
     
     <div id="spectral-content">
       <p id="spectral-question" class="spectral-question">Loading question...</p>
-      <div id="spectral-options" class="spectral-options"></div>
+      <div id="spectral-options" class="spectral-options">
+        <!-- Dynamically populated via JS -->
+      </div>
     </div>
     <div id="spectral-feedback" class="spectral-feedback"></div>
   </div>
@@ -476,18 +593,19 @@
     <div class="section-title">Log Date</div>
     <div class="date-picker-box">
       <span style="font-size: 0.75rem; font-weight: 700;">📅 DATE:</span>
-      <input type="date" id="log-date-picker">
+      <input type="date" id="log-date-picker" min="2026-09-01">
     </div>
 
     <div id="log-controls-container">
       <div class="section-title">1. Workout Log</div>
       <div class="btn-grid">
-        <button class="btn btn-green active" id="btn-w-gym"><span>🏋️ Gym + Pushups</span></button>
-        <button class="btn btn-green" id="btn-w-home"><span>🏠 Home + Pushups</span></button>
-        <button class="btn btn-blue" id="btn-w-skip"><span>🛡️ Workout Skip</span></button>
-        <button class="btn btn-red" id="btn-w-viol"><span>⚠️ Violation</span></button>
+        <button class="btn btn-green active" id="btn-w-gym"><span>🏋️ Gym + Pushups</span><span style="font-size: 0.65rem; color: var(--muted);">(100 Chips)</span></button>
+        <button class="btn btn-green" id="btn-w-home"><span>🏠 Home + Pushups</span><span style="font-size: 0.65rem; color: var(--muted);">(100 Chips)</span></button>
+        <button class="btn btn-blue" id="btn-w-skip"><span>🛡️ Workout Skip</span><span id="skip-chip-val" style="font-size: 0.65rem; color: var(--muted);">(25 Chips)</span></button>
+        <button class="btn btn-red" id="btn-w-viol"><span>⚠️ Violation</span><span style="font-size: 0.65rem; color: #fca5a5;">(0 Chips)</span></button>
       </div>
 
+      <!-- Volume Input -->
       <div class="volume-box">
         <div>
           <span style="font-family: 'Press Start 2P', monospace; font-size: 0.55rem; color: var(--blue); display: block; margin-bottom: 2px;">🏋️ VOLUME LIFTED</span>
@@ -509,9 +627,6 @@ document.getElementById('rules-toggle').onclick = function() {
     const content = document.getElementById('rules-content');
     content.style.display = content.style.display === 'block' ? 'none' : 'block';
 };
-
-// Set today's date in picker
-document.getElementById('log-date-picker').valueAsDate = new Date();
 
 // Expert Questions Bank for Balatro Masters
 const expertQuestionsBank = [
